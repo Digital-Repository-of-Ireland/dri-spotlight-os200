@@ -1,0 +1,68 @@
+#header-navbar {
+  min-height: $brandbar-height;
+
+  .navbar-brand {
+    @extend .text-hide;
+
+    background-size: contain;
+    height: $brandbar-height;
+    padding: $brandbar-padding-vertical $navbar-padding-horizontal;
+    width: 189px;
+  }
+
+  .navbar-nav {
+    @media (max-width: $screen-xs-max) {
+      &.pull-right {
+        float: none !important;
+      }
+    }
+
+    @media (min-width: $grid-float-breakpoint) {
+      > li {
+        > a {
+          padding-bottom: $brandbar-padding-vertical;
+          padding-top: $brandbar-padding-vertical;
+        }
+      }
+    }
+  }
+
+  .navbar-toggle {
+    @include brandbar-vertical-align(34px);
+  }
+
+  .navbar-form {
+    @include brandbar-vertical-align($input-height-base);
+  }
+
+  .navbar-btn {
+    @include brandbar-vertical-align($input-height-base);
+
+    &.btn-sm {
+      @include brandbar-vertical-align($input-height-small);
+    }
+
+    &.btn-xs {
+      @include brandbar-vertical-align(22);
+    }
+  }
+
+  .navbar-text {
+    @include brandbar-vertical-align($line-height-computed);
+  }
+}
+
+.navbar-form {
+  button {
+    background-color: $dri_white;
+    border-color: $dri_lightgrey;
+
+    .glyphicon-search {
+      color: $dri_lightgrey;
+    }
+  }
+}
+
+.sul-footer {
+  margin-top: 2 * $padding-large-vertical;
+}
