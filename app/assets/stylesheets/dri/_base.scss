@@ -1,0 +1,43 @@
+/*-------------- DRI Body --------------*/
+
+html {
+    margin-bottom: 0.5em;
+    height: 100%;
+    body {
+        font: 120% Arial, Helvetica, clean, sans-serif;
+        *font-size: small;
+        *font: x-small;
+        margin: 0;
+    }
+}
+h1,
+h2,
+h3 {
+    line-height: 150%;
+}
+a {
+    
+    text-decoration: none; 
+    color: $dri_midgrey;
+}
+a:hover,
+a:focus {
+    
+    text-decoration: none;
+}
+/*-------------- Mixins --------------*/
+
+//mixin example for border radius
+@mixin border_radius ($br: 2px) {
+    -moz-border-radius: $br;
+    border-radius: $br;
+}
+
+/*-------------- Blacklight Overrides -------*/
+
+.nav-tabs > li.active > a {
+    border-top: 3px solid $dri_green;
+    background-color: $dri_extralightgrey;
+    font-size: 14px;
+    font-weight: bold;
+}

@@ -59,6 +59,8 @@ group :development, :test do
   gem 'solr_wrapper', '>= 0.3'
 end
 
+gem 'bootswatch-rails'
+
 gem 'rsolr', '>= 1.0'
 gem 'jquery-rails'
 gem 'devise'
