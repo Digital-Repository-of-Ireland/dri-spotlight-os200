@@ -41,3 +41,45 @@ a:focus {
     font-size: 14px;
     font-weight: bold;
 }
+
+.btn-nav {
+    @extend .dri_button_green;
+    display: inline-block;
+    font-weight: normal;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: none;
+    white-space: nowrap;
+    padding: 0;
+    margin: 0;
+    font-size: 100%;
+    line-height: none;
+    @include border_radius (3px);
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.dri_button {
+    color: $dri_white;
+    border: none;
+    font-weight: normal;
+}
+
+.dri_button_green {
+    @extend .dri_button;
+    background-color: $dri_green;
+    &:hover {
+        background-color: darken($dri_green, 3%) !important;
+    }
+}
+
+.search-btn {
+    border: 1px solid #ccc;
+    background-color: $dri_green;
+    &:hover {
+        background-color: darken($dri_green, 3%);
+    }
+}
