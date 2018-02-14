@@ -35,25 +35,14 @@ a:focus {
 
 /*-------------- Blacklight Overrides -------*/
 
-.btn {
-   background-color: $dri_green;
-   color: $dri_white;
-   &:hover {
-       background-color: darken($dri_green, 3%) !important;
-   }     
-}
-
-.btn-default {
+.dri-button {
     display: inline-block;
     font-weight: normal;
     text-align: center;
     vertical-align: middle;
     cursor: pointer;
     background-image: none;
-    padding: 5px 10px 4px 10px;
-    border: none;
     white-space: nowrap;
-    margin: 0;
     font-size: 100%;
     line-height: none;
     @include border_radius (3px);
@@ -62,28 +51,21 @@ a:focus {
     user-select: none;
 }
 
-.search-btn {
-   background-color: $dri_green !important;
-   color: $dri_white !important;
+.btn-link {
+  @extend .dri-button;
+  background-color: $dri_lightgrey;
+  &:hover {
+    background-color: darken($dri_lightgrey, 3%) !important;
+  }
 }
 
-.btn:hover {
-    background-color: darken($dri_midgrey, 3%);
-    color: #FFF;
-}
-
-.btn-info {
-   border: none; 
-}
-
-.navbar-right > ul > li > a {
-    
-    color: $dri_midgrey;
-            &:hover {
-                text-decoration: underline !important;
-                color: $dri_midgrey !important;
-            }
-            &.on {
-                color: $dri_grey;
-            }
+.navbar-right > ul > li > a {  
+  color: $dri_midgrey;
+    &:hover {
+        text-decoration: underline !important;
+        color: $dri_midgrey !important;
+    }
+    &.on {
+        color: $dri_grey;
+    }
 }

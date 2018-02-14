@@ -31,10 +31,33 @@ $btn-default-bg: $dri_darkgrey;
 
 $navbar-inverse-bg: $brand-primary;
 $navbar-inverse-border: $brand-primary;
-
 $navbar-default-bg: $dri_white;
-
 $navbar-transparent-page-bg: rgba(0, 0, 0, 0.25);
+
+$btn-default-color:              $dri_white;
+$btn-default-bg:                 $dri_lightgrey;
+$btn-default-border:             $dri_lightgrey;
+$btn-primary-color:              $dri_white;
+$btn-primary-bg:                 $dri_green;
+$btn-info-color:                 $dri_white;
+$btn-info-bg:                    $dri_green;
+$btn-info-border:                darken($dri_green, 5%);
+
+$pagination-color:                     $dri_lightgrey;
+$pagination-bg:                        #fff;
+$pagination-border:                    #ddd;
+
+$pagination-hover-color:               $dri_darkgrey;
+$pagination-hover-bg:                  $dri_extralightgrey;
+$pagination-hover-border:              #ddd;
+
+$pagination-active-color:              $dri_darkgrey;
+$pagination-active-bg:                 $brand-primary;
+$pagination-active-border:             #ddd;
+
+$pagination-disabled-color:            $dri_extralightgrey;
+$pagination-disabled-bg:               #fff;
+$pagination-disabled-border:           #ddd;
 
 @import "bootstrap/variables";
 @import "spotlight/variables";
