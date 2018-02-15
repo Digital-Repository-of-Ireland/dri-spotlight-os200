@@ -35,6 +35,15 @@ a:focus {
 
 /*-------------- Blacklight Overrides -------*/
 
+.btn-link {
+  @extend .dri-button;
+  color: $dri_white;
+  background-color: $dri_lightgrey;
+  &:hover {
+    background-color: darken($dri_lightgrey, 3%) !important;
+  }
+}
+
 .dri-button {
     display: inline-block;
     font-weight: normal;
@@ -51,21 +60,46 @@ a:focus {
     user-select: none;
 }
 
-.btn-link {
-  @extend .dri-button;
-  background-color: $dri_lightgrey;
-  &:hover {
-    background-color: darken($dri_lightgrey, 3%) !important;
+.search-btn {
+   &:hover {
+     background-color: $dri_extralightgrey !important;
   }
 }
 
-.navbar-right > ul > li > a {  
-  color: $dri_midgrey;
+.navbar-right > ul > li > a {
+    color: $dri_midgrey;
+            &:hover {
+                text-decoration: underline !important;
+                color: $dri_midgrey !important;
+            }
+            &.on {
+                color: $dri_grey;
+            }
+}
+
+.pagination > .active > a {
+  color: #777777 !important;
+  border-color: #ddd !important;
+}
+
+.search-widgets {
+  .btn {
+    color: $dri_darkgrey;
+    background-color: $dri_extralightgrey;
     &:hover {
-        text-decoration: underline !important;
-        color: $dri_midgrey !important;
+      color: $dri_darkgrey !important;
+      background-color: darken($dri_extralightgrey, 3%);
     }
-    &.on {
-        color: $dri_grey;
-    }
+  }
+  .active {
+    background-color: darken($dri_extralightgrey, 10%) !important;
+  }
+  .dropdown-toggle {
+    color: $dri_darkgrey !important;
+  }
+}
+
+.openseadragon-container {
+  display: block;
+  min-height: 300px;
 }

@@ -24,13 +24,17 @@ $dri_logo_tiny_url: 'dri/dri_ident_tiny.png';
 
 $logo_image: $dri_logo_url;
 
-$brand-primary: $dri_white;
+$brand-primary: $dri_lightgrey;
 
-$btn-default-color: $dri_green;
-$btn-default-bg: $dri_darkgrey;
+//** Global textual link color.
+$link-color:            $dri_lightgrey;
+//** Link hover color set via `darken()` function.
+$link-hover-color:      darken($link-color, 15%);
+//** Link hover decoration.
+$link-hover-decoration: underline;
 
-$navbar-inverse-bg: $brand-primary;
-$navbar-inverse-border: $brand-primary;
+$navbar-inverse-bg: $dri_white;
+$navbar-inverse-border: $dri_white;
 $navbar-default-bg: $dri_white;
 $navbar-transparent-page-bg: rgba(0, 0, 0, 0.25);
 

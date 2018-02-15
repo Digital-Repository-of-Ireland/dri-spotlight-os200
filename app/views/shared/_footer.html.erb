@@ -1,0 +1,41 @@
+<footer id="dri_main_footer_id" class="dri_main_footer">
+
+  <div id="dri_footer_address_id" class="dri_footer_address">
+    <%= t('dri.footer.ria_address.project') %><br/>
+    <%= t('dri.footer.ria_address.name') %><br/>
+    <%= t('dri.footer.ria_address.street') %><br/>
+    <%= t('dri.footer.ria_address.zip') %><br/>
+    <% phoneNum = '+353 1 609 0674' %>
+    <%= t('dri.footer.contacts.phone') + ' ' + phoneNum %><br/>
+    <% emailAddress = 'dri@ria.ie' %>
+    <%= t('dri.footer.contacts.email') + ' ' %>
+    <%= link_to emailAddress, "mailto:#{emailAddress}", :id => 'contact_email' %><br/><br/>
+  </div>
+
+  <div id="dri_footer_dsa_logo_id" class="dri_footer_dsa_logo">
+    <%= link_to 'https://www.datasealofapproval.org/en/', :id => "dsa_link", :target => "_blank" do %>
+      <%= image_tag("logo_DSA_regulier_120x120_01.png", :alt=>"Data Seal of Approval" ) %>
+    <% end %>
+  </div>
+
+   <nav id="dri_main_footer_navigation_id"
+       class="dri_main_footer_navigation">
+    <ul id="dri_main_footer_navigation_links_id"
+        class="dri_main_footer_navigation_links">
+      <li class="">
+        <span> <%= link_to t('dri.headerlinks.end_user_agreement'), 'https://repository.dri.ie/pages/terms', id: 'end_user_agreement', class: 'muted', target: '_blank' %> </span>
+      </li>
+      <li class="">
+        <span> <%= link_to t('dri.headerlinks.privacy_statement'), 'http://www.dri.ie/privacy-statement', :id => "privacy_statement", :class => "muted", :target => '_blank' %> </span>
+      </li>
+
+      <li>
+        <%= link_to t('dri.headerlinks.help'), 'https://repository.dri.ie/pages/about_faq', id: "dri_footer_help", target: '_blank' %>
+      </li>
+      <li>
+        <%= link_to t('dri.headerlinks.find_us'), 'http://www.dri.ie/contact', id: 'find_us_footer', class: 'muted', target: '_blank' %>
+      </li>
+    </ul>
+  </nav>
+
+</footer>
