@@ -13,8 +13,8 @@
   </div>
 
   <div id="dri_footer_dsa_logo_id" class="dri_footer_dsa_logo">
-    <%= link_to 'https://www.datasealofapproval.org/en/', :id => "dsa_link", :target => "_blank" do %>
-      <%= image_tag("logo_DSA_regulier_120x120_01.png", :alt=>"Data Seal of Approval" ) %>
+    <%= link_to 'https://www.coretrustseal.org/', id: "dsa_link", target: "_blank" do %>
+      <%= image_tag("CoreTrustSeal-logo_60x60.png", alt: "Core Trust Seal" ) %>
     <% end %>
   </div>
 
@@ -28,7 +28,9 @@
       <li class="">
         <span> <%= link_to t('dri.headerlinks.privacy_statement'), 'http://www.dri.ie/privacy-statement', :id => "privacy_statement", :class => "muted", :target => '_blank' %> </span>
       </li>
-
+      <li class="">
+        <span> <%= link_to t('dri.headerlinks.licensing_statement'), 'http://www.dri.ie/licensing-statement', :id => "licensing_statement", :class => "muted", :target => '_blank' %> </span>
+      </li>
       <li>
         <%= link_to t('dri.headerlinks.help'), 'https://repository.dri.ie/pages/about_faq', id: "dri_footer_help", target: '_blank' %>
       </li>
