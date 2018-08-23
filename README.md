@@ -30,5 +30,5 @@ $ solr_wrapper
 
 Start the server:
 ```console
-bundle exec rake server
+$ bundle exec rake server
 ```
