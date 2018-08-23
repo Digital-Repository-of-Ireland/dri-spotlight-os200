@@ -32,6 +32,11 @@ class CatalogController < ApplicationController
 
     config.add_sort_field 'relevance', sort: 'score desc', label: 'Relevance'
 
+    config.add_facet_field 'readonly_creator_ssim', label: 'Creator', limit: true
+    config.add_facet_field 'readonly_subject_ssim', label: 'Subject', limit: true
+
+    config.add_facet_fields_to_solr_request!
+
     config.add_field_configuration_to_solr_request!
 
     # Set which views by default only have the title displayed, e.g.,
