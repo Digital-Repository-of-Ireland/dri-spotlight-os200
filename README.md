@@ -1,24 +1,34 @@
-# README
+# DRI Spotlight
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A Spotlight application with DRI branding and functionality. It includes the [spotlight-resources-dri](https://github.com/Digital-Repository-of-Ireland/spotlight-resources-dri) gem for importing DRI objects into an exhibit.
 
-Things you may want to cover:
+## Configuration
 
-* Ruby version
+Exhibits need to provide the following configuration files:
 
-* System dependencies
+* `config/database.yml` - Standard Rails database configuration
+* `config/blacklight.yml` - Blacklight solr configuration
+* config/initializers/secret_token.rb - Rails secret token
 
-* Configuration
+## Development
 
-* Database creation
+### Requirements
+- Redis (for running background jobs with Sidekiq)
 
-* Database initialization
+See [projectblacklight/spotlight](https://github.com/projectblacklight/spotlight) for additional requirements.
 
-* How to run the test suite
+Install dependencies, set up the databases and run migrations:
+```console
+$ bundle install
+$ bundle exec rake db:setup
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+Start a Solr instance:
+```console
+$ solr_wrapper
+```
 
-* Deployment instructions
-
-* ...
+Start the server:
+```console
+bundle exec rake server
+```

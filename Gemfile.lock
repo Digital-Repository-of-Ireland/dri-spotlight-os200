@@ -1,4 +1,11 @@
 GIT
+  remote: https://github.com/Digital-Repository-of-Ireland/spotlight-resources-dri.git
+  revision: bfd989faf77977dc050c0c494dd43c7182c47670
+  specs:
+    spotlight-resources-dri (0.1.0)
+      blacklight-spotlight
+
+GIT
   remote: https://github.com/projectblacklight/spotlight.git
   revision: aebd01d4b6e5c0fe955d33a6d5de4b1768c39b49
   specs:
@@ -288,7 +295,7 @@ GEM
     responders (2.4.0)
       actionpack (>= 4.2.0, < 5.3)
       railties (>= 4.2.0, < 5.3)
-    retriable (3.1.1)
+    retriable (3.1.2)
     riiif (1.7.1)
       deprecation (>= 1.0.0)
       railties (>= 4.2, < 6)
@@ -305,7 +312,7 @@ GEM
       builder (>= 2.1.2)
       faraday (>= 0.9.0)
     ruby-oembed (0.12.0)
-    ruby-progressbar (1.9.0)
+    ruby-progressbar (1.10.0)
     ruby_dep (1.5.0)
     rubyzip (1.2.1)
     sass (3.5.6)
@@ -334,7 +341,7 @@ GEM
       twitter-text (~> 1.4)
     sitemap_generator (6.0.1)
       builder (~> 3.0)
-    solr_wrapper (1.2.0)
+    solr_wrapper (2.0.0)
       faraday
       retriable
       ruby-progressbar
@@ -423,6 +430,7 @@ DEPENDENCIES
   selenium-webdriver
   sitemap_generator
   solr_wrapper (>= 0.3)
+  spotlight-resources-dri!
   spring
   spring-watcher-listen (~> 2.0.0)
   sqlite3
@@ -432,4 +440,4 @@ DEPENDENCIES
   web-console (>= 3.3.0)
 
 BUNDLED WITH
-   1.16.1
+   1.16.3

@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   
+  mount Spotlight::Resources::Dri::Engine, at: 'spotlight_resources_dri'
   mount Blacklight::Oembed::Engine, at: 'oembed'
   mount Riiif::Engine => '/images', as: 'riiif'
   root to: 'spotlight/exhibits#index'
