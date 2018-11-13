@@ -25,10 +25,10 @@ $ bundle exec rake db:setup
 
 Start a Solr instance:
 ```console
-$ solr_wrapper
+$ bundle exec solr_wrapper
 ```
 
 Start the server:
 ```console
-$ bundle exec rake server
+$ bundle exec rails server
 ```
