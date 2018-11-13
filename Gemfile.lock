@@ -314,7 +314,7 @@ GEM
     ruby-oembed (0.12.0)
     ruby-progressbar (1.10.0)
     ruby_dep (1.5.0)
-    rubyzip (1.2.1)
+    rubyzip (1.2.2)
     sass (3.5.6)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
@@ -427,6 +427,7 @@ DEPENDENCIES
   rails (~> 5.1.4)
   riiif (~> 1.0)
   rsolr (>= 1.0)
+  rubyzip (>= 1.2.2)
   sass-rails (~> 5.0)
   selenium-webdriver
   sitemap_generator
