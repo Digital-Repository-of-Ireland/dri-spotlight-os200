@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Digital-Repository-of-Ireland/spotlight-resources-dri.git
-  revision: 2ef760cd51826599cf848c8a17486b6a6765e47d
+  revision: 13855392551c9f4051b553ec6143546179abe5fe
   specs:
     spotlight-resources-dri (0.1.0)
       blacklight-spotlight
@@ -80,7 +80,7 @@ GEM
       bootstrap-sass (~> 3.0)
       rails
       ruby-oembed
-    blacklight-spotlight (2.6.1.1)
+    blacklight-spotlight (2.7.0)
       acts-as-taggable-on (>= 5.0, < 7)
       almond-rails (~> 0.1)
       autoprefixer-rails
@@ -191,7 +191,7 @@ GEM
       activesupport (>= 4)
     jbuilder (2.9.1)
       activesupport (>= 4.2.0)
-    jquery-rails (4.3.3)
+    jquery-rails (4.3.5)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
@@ -209,7 +209,7 @@ GEM
       activerecord
       kaminari-core (= 1.1.1)
     kaminari-core (1.1.1)
-    leaflet-rails (1.4.0)
+    leaflet-rails (1.5.1)
       rails (>= 4.2.0)
     legato (0.7.0)
       multi_json
@@ -249,7 +249,7 @@ GEM
     paper_trail (10.3.0)
       activerecord (>= 4.2, < 6.1)
       request_store (~> 1.1)
-    public_suffix (3.1.0)
+    public_suffix (3.1.1)
     puma (3.12.1)
     rack (2.0.7)
     rack-test (1.1.0)
@@ -288,9 +288,9 @@ GEM
       uber (< 0.2.0)
     request_store (1.4.1)
       rack (>= 1.4)
-    responders (2.4.1)
-      actionpack (>= 4.2.0, < 6.0)
-      railties (>= 4.2.0, < 6.0)
+    responders (3.0.0)
+      actionpack (>= 5.0)
+      railties (>= 5.0)
     retriable (3.1.2)
     riiif (2.1.0)
       deprecation (>= 1.0.0)
