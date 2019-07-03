@@ -34,6 +34,7 @@ class CatalogController < ApplicationController
 
     config.add_facet_field 'readonly_creator_ssim', label: 'Creator', limit: true
     config.add_facet_field 'readonly_subject_ssim', label: 'Subject', limit: true
+    config.add_facet_field 'readonly_type_ssim', label: 'Type', limit: true
 
     config.add_facet_fields_to_solr_request!
 
