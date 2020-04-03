@@ -1,0 +1,147 @@
+version: '2'
+
+volumes:
+  solr:
+  db:
+  redis:
+  zk1:
+  zkconf:
+  app:
+  assets:
+
+networks:
+  internal:
+
+services:
+  zoo1:
+    image: zookeeper:3.4
+    environment:
+      - ZOO_MY_ID=1
+      - ZOO_SERVERS=server.1=zoo1:2888:3888
+    expose:
+      - 2181
+      - 2888
+      - 3888
+    volumes:
+      - zk1:/data
+      - zkconf:/conf
+    networks:
+      internal:
+       aliases:
+         - zookeeper_cluster
+
+  solr:
+    image: solr:7.5
+    command: solr -c -f -z zoo1:2181
+    depends_on:
+      - zoo1
+    expose:
+      - 8983
+    volumes:
+      - .:/app
+      - solr:/opt/solr/server/solr
+    networks:
+      internal:
+
+  db:
+    image: mysql:5.7
+    env_file:
+      - .env
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DATABASE_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${DATABASE_NAME}
+      - MYSQL_PASSWORD=${DATABASE_PASSWORD}
+      - MYSQL_USER=${DATABASE_USER}
+    volumes:
+      - db:/var/lib/mysql/data
+    networks:
+      internal:
+
+  base:
+    image: dri/base:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.base
+    env_file:
+      - .env
+
+  app:
+    build: .
+    image: dri/spotlight:latest
+    env_file:
+      - .env
+    environment:
+      - IN_DOCKER=true
+      - RAILS_LOG_TO_STDOUT=true
+      - REDIS_HOST=redis
+      - SECRET_KEY_BASE=asdf
+      - SETTINGS__ACTIVE_JOB__QUEUE_ADAPTER=sidekiq
+      - SETTINGS__SOLR__URL=http://solr:8983/solr/
+      - SETTINGS__ZOOKEEPER__CONNECTION_STR=zookeeper_cluster:2181/configs
+      - SOLR_URL=http://solr:8983/solr/
+      - PASSENGER_APP_ENV=development
+      - RAILS_ENV=development
+    volumes:
+      - app:/home/app/webapp/tmp/uploads
+      - assets:/home/app/webapp/public/assets
+      - .:/home/app/webapp
+    networks:
+      internal:
+
+  web:
+    extends:
+      service: app
+    environment:
+      - VIRTUAL_PORT=80
+      - VIRTUAL_HOST=dri-spotlight.docker
+    depends_on:
+      - db
+      - solr
+      - redis
+      - zoo1
+      - chrome
+      - initialize_app
+      - db_migrate
+    expose:
+      - 80
+    # ports:
+      # 3000:80 # uncomment this if you dont use dory or another proxy
+
+  workers:
+    extends:
+      service: app
+    command: bundle exec sidekiq
+    depends_on:
+      - db
+      - solr
+      - redis
+      - zoo1
+      - initialize_app
+      - db_migrate
+
+  initialize_app:
+    extends:
+      service: app
+    command: bundle exec rails zookeeper:upload
+    depends_on:
+      - zoo1
+
+  db_migrate:
+    extends:
+      service: app
+    command: bundle exec rails db:migrate
+    depends_on:
+      - db
+
+  redis:
+    image: redis:3
+    command: redis-server
+    volumes:
+      - redis:/data
+    networks:
+      internal:
+
+  chrome:
+    image: selenium/standalone-chrome:3.141
+    networks:
+      internal:
