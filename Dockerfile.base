@@ -8,7 +8,7 @@ RUN apt-get update -qq && \
                        nodejs \
                        libsasl2-dev \
                        netcat \
-                       mysql-client \
+                       postgresql-client \
                        rsync \
                        tzdata \
                        unzip \
@@ -32,7 +32,7 @@ RUN /sbin/setuser app bundle install
 
 COPY  --chown=app . $APP_HOME
 
-RUN  /sbin/setuser app /bin/bash -l -c 'cd /home/app/webapp && DB_ADAPTER=nulldb bundle exec rake assets:precompile'
+RUN  /sbin/setuser app /bin/bash -l -c 'cd /home/app/webapp && DATABASE_ADAPTER=nulldb bundle exec rake assets:precompile'
 
 COPY ops/nginx.sh /etc/service/nginx/run
 RUN chmod +x /etc/service/nginx/run

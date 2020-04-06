@@ -1,5 +1,5 @@
 login: &login
-  adapter: <%= ENV['DATABASE_ADAPTER'] || 'mysql2' %>
+  adapter: <%= ENV['DATABASE_ADAPTER'] || 'postgresql' %>
   host: <%= ENV['DATABASE_HOST'] %>
   username: <%= ENV['DATABASE_USER'] %>
   password: <%= ENV['DATABASE_PASSWORD'] %>

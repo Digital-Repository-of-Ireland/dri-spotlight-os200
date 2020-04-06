@@ -44,21 +44,20 @@ services:
       internal:
 
   db:
-    image: mysql:5.7
+    image: postgres:11.1
     env_file:
       - .env
     environment:
-      - MYSQL_ROOT_PASSWORD=${DATABASE_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${DATABASE_NAME}
-      - MYSQL_PASSWORD=${DATABASE_PASSWORD}
-      - MYSQL_USER=${DATABASE_USER}
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_USER=${DATABASE_USER}
     volumes:
-      - db:/var/lib/mysql/data
+      - db:/var/lib/postgresql/data
     networks:
       internal:
 
   base:
-    image: dri/base:latest
+    image: digitalrepoireland/spotlight-base:latest
     build:
       context: .
       dockerfile: Dockerfile.base
@@ -67,7 +66,7 @@ services:
 
   app:
     build: .
-    image: dri/spotlight:latest
+    image: digitalrepoireland/spotlight:latest
     env_file:
       - .env
     environment:
@@ -84,7 +83,7 @@ services:
     volumes:
       - app:/home/app/webapp/tmp/uploads
       - assets:/home/app/webapp/public/assets
-      - .:/home/app/webapp
+        #- .:/home/app/webapp
     networks:
       internal:
 
@@ -104,8 +103,8 @@ services:
       - db_migrate
     expose:
       - 80
-    # ports:
-      # 3000:80 # uncomment this if you dont use dory or another proxy
+    ports:
+      - 3000:80 # uncomment this if you dont use dory or another proxy
 
   workers:
     extends:
