@@ -12,6 +12,14 @@ Exhibits need to provide the following configuration files:
 
 ## Development
 
+### Docker
+
+```bash
+docker-compose up web # web here means you can start and stop Rails w/o starting or stopping other services. `docker-compose stop` when done shuts everything else down.
+```
+
+Once that starts you can view your app in a web browser at localhost:3000
+
 ### Requirements
 - Redis (for running background jobs with Sidekiq)
 
