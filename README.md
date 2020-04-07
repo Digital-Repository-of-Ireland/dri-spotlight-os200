@@ -47,3 +47,9 @@ Start the server:
 ```console
 $ bundle exec rails server
 ```
+
+To create an admin user, or to give an existing user an admin role:
+```bash
+rake spotlight:admin
+```
+
