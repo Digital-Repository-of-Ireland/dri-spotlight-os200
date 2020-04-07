@@ -102,6 +102,7 @@ services:
       - chrome
       - initialize_app
       - db_migrate
+      - create_admin
     expose:
       - 80
     ports:
@@ -132,6 +133,13 @@ services:
     command: bundle exec rails db:migrate
     depends_on:
       - db
+
+  create_admin:
+    extends:
+      service: app
+    command: bundle exec rake dri_spotlight:admin
+    depends_on:
+      - db_migrate
 
   redis:
     image: redis:3
