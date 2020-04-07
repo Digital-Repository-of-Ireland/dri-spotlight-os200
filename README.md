@@ -2,28 +2,35 @@
 
 A Spotlight application with DRI branding and functionality. It includes the [spotlight-resources-dri](https://github.com/Digital-Repository-of-Ireland/spotlight-resources-dri) gem for importing DRI objects into an exhibit.
 
-## Configuration
+## Deploy
+
+### Docker
+The application and the full stack it requires can brought up using Docker. Docker and docker-compose will need to be installed to do this. The following command can then be used to start the application in for development (i.e. the repository is mounted in the container as a volume):
+
+```bash
+# web here means you can start and stop Rails w/o starting or stopping other services. 
+# `docker-compose stop` when done shuts everything else down.
+docker-compose up web
+```
+
+For a production environment deployment:
+```bash
+docker-compose -f docker-compose.production.yml up web
+```
+
+The .env file in the root of the repository can be used to set variables for the services started by Docker.
+
+### Without Docker
+
+- Redis is required (for running background jobs with Sidekiq)
+
+See [projectblacklight/spotlight](https://github.com/projectblacklight/spotlight) for additional requirements.
 
 Exhibits need to provide the following configuration files:
 
 * `config/database.yml` - Standard Rails database configuration
 * `config/blacklight.yml` - Blacklight solr configuration
 * config/initializers/secret_token.rb - Rails secret token
-
-## Development
-
-### Docker
-
-```bash
-docker-compose up web # web here means you can start and stop Rails w/o starting or stopping other services. `docker-compose stop` when done shuts everything else down.
-```
-
-Once that starts you can view your app in a web browser at localhost:3000
-
-### Requirements
-- Redis (for running background jobs with Sidekiq)
-
-See [projectblacklight/spotlight](https://github.com/projectblacklight/spotlight) for additional requirements.
 
 Install dependencies, set up the databases and run migrations:
 ```console

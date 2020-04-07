@@ -5,6 +5,8 @@ volumes:
   db:
   redis:
   zk1:
+  zk2:
+  zk3:
   zkconf:
   app:
   assets:
@@ -15,9 +17,10 @@ networks:
 services:
   zoo1:
     image: zookeeper:3.4
+    restart: always
     environment:
       - ZOO_MY_ID=1
-      - ZOO_SERVERS=server.1=zoo1:2888:3888
+      - ZOO_SERVERS=server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
     expose:
       - 2181
       - 2888
@@ -29,16 +32,51 @@ services:
       internal:
        aliases:
          - zookeeper_cluster
+  zoo2:
+    image: zookeeper:3.4
+    restart: always
+    environment:
+      - ZOO_MY_ID=2
+      - ZOO_SERVERS=server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
+    expose:
+      - 2181
+      - 2888
+      - 3888
+    volumes:
+      - zk2:/data
+      - zkconf:/conf
+    networks:
+      internal:
+       aliases:
+         - zookeeper_cluster
+  zoo3:
+    image: zookeeper:3.4
+    restart: always
+    environment:
+      - ZOO_MY_ID=3
+      - ZOO_SERVERS=server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
+    expose:
+      - 2181
+      - 2888
+      - 3888
+    volumes:
+      - zk3:/data
+      - zkconf:/conf
+    networks:
+      internal:
+       aliases:
+         - zookeeper_cluster
 
   solr:
-    image: solr:7.5
-    command: solr -c -f -z zoo1:2181
+    image: solr:7.1
+    command: solr -c -f -z zookeeper_cluster:2181
     depends_on:
       - zoo1
+      - zoo2
+      - zoo3
     expose:
       - 8983
     volumes:
-      - .:/app
       - solr:/opt/solr/server/solr
     networks:
       internal:
@@ -56,21 +94,14 @@ services:
     networks:
       internal:
 
-  base:
-    image: digitalrepoireland/spotlight-base:latest
-    build:
-      context: .
-      dockerfile: Dockerfile.base
-    env_file:
-      - .env
-
   app:
-    build: .
     image: digitalrepoireland/spotlight:latest
     env_file:
       - .env
     environment:
       - IN_DOCKER=true
+      - PASSENGER_APP_ENV=production
+      - RAILS_CACHE_STORE_URL=memcache
       - RAILS_LOG_TO_STDOUT=true
       - REDIS_HOST=redis
       - SECRET_KEY_BASE=asdf
@@ -78,34 +109,27 @@ services:
       - SETTINGS__SOLR__URL=http://solr:8983/solr/
       - SETTINGS__ZOOKEEPER__CONNECTION_STR=zookeeper_cluster:2181/configs
       - SOLR_URL=http://solr:8983/solr/
-      - PASSENGER_APP_ENV=development
-      - RAILS_ENV=development
     volumes:
-      - /home/app/webapp/tmp
       - app:/home/app/webapp/tmp/uploads
       - assets:/home/app/webapp/public/assets
-      - .:/home/app/webapp
     networks:
       internal:
 
   web:
     extends:
       service: app
-    environment:
-      - VIRTUAL_PORT=80
-      - VIRTUAL_HOST=dri-spotlight.docker
     depends_on:
       - db
       - solr
       - redis
       - zoo1
-      - chrome
+      - zoo2
+      - zoo3
+      - memcache
       - initialize_app
       - db_migrate
     expose:
-      - 80
-    ports:
-      - 3000:80 # uncomment this if you dont use dory or another proxy
+      - 3000
 
   workers:
     extends:
@@ -116,19 +140,25 @@ services:
       - solr
       - redis
       - zoo1
+      - zoo2
+      - zoo3
       - initialize_app
       - db_migrate
 
   initialize_app:
     extends:
       service: app
+    restart: on-failure
     command: bundle exec rails zookeeper:upload
     depends_on:
       - zoo1
+      - zoo2
+      - zoo3
 
   db_migrate:
     extends:
       service: app
+    restart: on-failure
     command: bundle exec rails db:migrate
     depends_on:
       - db
@@ -141,7 +171,8 @@ services:
     networks:
       internal:
 
-  chrome:
-    image: selenium/standalone-chrome:3.141
+  memcache:
+    image: memcached:1.5.14
     networks:
       internal:
+
