@@ -4,8 +4,6 @@ volumes:
   solr:
   db:
   redis:
-  zk1:
-  zkconf:
   app:
   assets:
 
@@ -13,32 +11,18 @@ networks:
   internal:
 
 services:
-  zoo1:
-    image: zookeeper:3.4
-    environment:
-      - ZOO_MY_ID=1
-      - ZOO_SERVERS=server.1=zoo1:2888:3888
-    expose:
-      - 2181
-      - 2888
-      - 3888
-    volumes:
-      - zk1:/data
-      - zkconf:/conf
-    networks:
-      internal:
-       aliases:
-         - zookeeper_cluster
 
   solr:
     image: solr:7.5
-    command: solr -c -f -z zoo1:2181
-    depends_on:
-      - zoo1
-    expose:
-      - 8983
+    ports:
+      - 9983:8983
+    command: 
+      - bash
+      - "-c"
+      - "precreate-core spotlight /opt/solr/server/configsets/spotlightconf; exec solr -f"
     volumes:
       - .:/app
+      - ./solr/conf:/opt/solr/server/configsets/spotlightconf
       - solr:/opt/solr/server/solr
     networks:
       internal:
@@ -75,9 +59,8 @@ services:
       - REDIS_HOST=redis
       - SECRET_KEY_BASE=asdf
       - SETTINGS__ACTIVE_JOB__QUEUE_ADAPTER=sidekiq
-      - SETTINGS__SOLR__URL=http://solr:8983/solr/
-      - SETTINGS__ZOOKEEPER__CONNECTION_STR=zookeeper_cluster:2181/configs
-      - SOLR_URL=http://solr:8983/solr/
+      - SETTINGS__SOLR__URL=http://solr:8983/solr/spotlight
+      - SOLR_URL=http://solr:8983/solr/spotlight
       - PASSENGER_APP_ENV=development
       - RAILS_ENV=development
     volumes:
@@ -98,9 +81,7 @@ services:
       - db
       - solr
       - redis
-      - zoo1
       - chrome
-      - initialize_app
       - db_migrate
       - create_admin
     expose:
@@ -116,16 +97,7 @@ services:
       - db
       - solr
       - redis
-      - zoo1
-      - initialize_app
       - db_migrate
-
-  initialize_app:
-    extends:
-      service: app
-    command: bundle exec rails zookeeper:upload
-    depends_on:
-      - zoo1
 
   db_migrate:
     extends:
