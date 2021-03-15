@@ -41,7 +41,7 @@ services:
       internal:
 
   base:
-    image: digitalrepoireland/spotlight-base:latest
+    image: digitalrepoireland/spotlight_base:latest
     build:
       context: .
       dockerfile: Dockerfile.base
