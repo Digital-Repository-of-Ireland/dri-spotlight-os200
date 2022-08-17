@@ -210,7 +210,7 @@ en:
       usergroups: 'Users & Groups'
       vacancies: Vacancies
       workspace: Workspace
-      find_us: 'Find Us'
+      find_us: 'Contact'
     help:
       add_documentation_help_text: These objects appear in the Related Materials section of the Collection show page.
       add_documentation_help_title: Add contextual information

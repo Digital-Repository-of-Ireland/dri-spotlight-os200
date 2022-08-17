@@ -1,5 +1,7 @@
 module ApplicationHelper
 
+  include SpotlightHelper
+
   def render_thumbnail(document, options)
     return unless document['full_image_url_ssm'].present?
 
