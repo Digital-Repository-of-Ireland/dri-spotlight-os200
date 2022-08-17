@@ -6,18 +6,18 @@
 
     background-size: contain;
     height: $brandbar-height;
-    padding: $brandbar-padding-vertical $navbar-padding-horizontal;
+    padding: $brandbar-padding-vertical $spacer;
     width: 189px;
   }
 
   .navbar-nav {
-    @media (max-width: $screen-xs-max) {
+    @media (max-width: breakpoint-max(xs)) {
       &.pull-right {
         float: none !important;
       }
     }
 
-    @media (min-width: $grid-float-breakpoint) {
+    @include media-breakpoint-up(lg) {
       > li {
         > a {
           padding-bottom: $brandbar-padding-vertical;
@@ -32,14 +32,14 @@
   }
 
   .navbar-form {
-    @include brandbar-vertical-align($input-height-base);
+    @include brandbar-vertical-align($input-height);
   }
 
   .navbar-btn {
-    @include brandbar-vertical-align($input-height-base);
+    @include brandbar-vertical-align($input-height);
 
     &.btn-sm {
-      @include brandbar-vertical-align($input-height-small);
+      @include brandbar-vertical-align($input-height-sm);
     }
 
     &.btn-xs {
@@ -48,7 +48,7 @@
   }
 
   .navbar-text {
-    @include brandbar-vertical-align($line-height-computed);
+    @include brandbar-vertical-align($spacer);
   }
 }
 
@@ -64,5 +64,5 @@
 }
 
 .dri_main_footer {
-  margin-top: 2 * $padding-large-vertical;
+  margin-top: 2 * $spacer;
 }

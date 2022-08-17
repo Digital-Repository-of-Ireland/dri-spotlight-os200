@@ -22,7 +22,7 @@ $dri_logo_url: "dri/dri_ident.png";
 $dri_logo_small_url: 'dri/dri_ident_small.png';
 $dri_logo_tiny_url: 'dri/dri_ident_tiny.png';
 
-$logo_image: $dri_logo_url;
+$logo-image: image_url($dri_logo_tiny_url);
 
 $brand-primary: $dri_lightgrey;
 
@@ -63,18 +63,19 @@ $pagination-disabled-color:            $dri_extralightgrey;
 $pagination-disabled-bg:               #fff;
 $pagination-disabled-border:           #ddd;
 
+@import "bootstrap/functions";
 @import "bootstrap/variables";
 @import "spotlight/variables";
 @import "spotlight/variables_bootstrap";
 
 $brandbar-height: 35px;
-$brandbar-padding-vertical: (($brandbar-height - $line-height-computed) / 2);
+$brandbar-padding-vertical: 15px;
 
 $home-masthead-height: 119px;
 
 $breadcrumb-bg: transparent;
-$breadcrumb-padding-vertical: $padding-base-vertical;
+$breadcrumb-padding-vertical: $spacer;
 
-$nav-link-padding: $padding-base-vertical $padding-base-horizontal;
+$nav-link-padding: $spacer $spacer;
 
 $modal-header-footer-height-guess: 212px;

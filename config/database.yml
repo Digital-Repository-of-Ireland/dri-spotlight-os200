@@ -7,9 +7,14 @@ login: &login
   pool: 50
   timeout: 5000
 
+default: &default
+  adapter: sqlite3
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
 
 development:
-  <<: *login
+  <<: *default
+  database: db/development.sqlite
 
 test:
   <<: *login

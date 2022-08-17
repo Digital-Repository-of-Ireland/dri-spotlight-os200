@@ -8,8 +8,8 @@
 /.bundle
 
 # Ignore the default SQLite database.
-/db/*.sqlite3
-/db/*.sqlite3-journal
+/db/*.sqlite
+/db/*.sqlite-journal
 
 # Ignore all logfiles and tempfiles.
 /log/*
@@ -22,3 +22,10 @@
 
 .byebug_history
 .ruby-version
+
+/public/packs
+/public/packs-test
+/node_modules
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
