@@ -1,11 +1,10 @@
-FROM phusion/passenger-ruby26:1.0.12
+FROM phusion/passenger-ruby27:2.3.0
 
 RUN apt-get update -qq && \
     apt-get install -y \
                        build-essential \
                        imagemagick \
                        libpq-dev \
-                       nodejs \
                        libsasl2-dev \
                        netcat \
                        postgresql-client \
@@ -15,6 +14,14 @@ RUN apt-get update -qq && \
                        && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN curl -sL https://deb.nodesource.com/setup_12.x -o /tmp/nodesource_setup.sh
+RUN bash /tmp/nodesource_setup.sh
+RUN apt-get install -y nodejs
+
+RUN curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+RUN apt-get update -qq && apt-get install -y yarn
 
 RUN rm /etc/nginx/sites-enabled/default
 COPY ops/webapp.conf /etc/nginx/sites-enabled/webapp.conf
@@ -32,7 +39,7 @@ RUN /sbin/setuser app bundle install
 
 COPY  --chown=app . $APP_HOME
 
-RUN  /sbin/setuser app /bin/bash -l -c 'cd /home/app/webapp && DATABASE_ADAPTER=nulldb bundle exec rake assets:precompile'
+RUN  /sbin/setuser app /bin/bash -l -c 'cd /home/app/webapp && rails webpacker:install && DATABASE_ADAPTER=nulldb bundle exec rake assets:precompile'
 
 COPY ops/nginx.sh /etc/service/nginx/run
 RUN chmod +x /etc/service/nginx/run

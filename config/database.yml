@@ -1,20 +1,14 @@
 login: &login
-  adapter: <%= ENV['DATABASE_ADAPTER'] || 'postgresql' %>
+  adapter: <%= ENV['DATABASE_ADAPTER'] || 'sqlite3' %>
   host: <%= ENV['DATABASE_HOST'] %>
   username: <%= ENV['DATABASE_USER'] %>
   password: <%= ENV['DATABASE_PASSWORD'] %>
-  database: <%= ENV['DATABASE_NAME'] || 'dri_spotlight' %>
-  pool: 50
-  timeout: 5000
-
-default: &default
-  adapter: sqlite3
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  database: <%= ENV['DATABASE_NAME'] || 'db/development.sqlite' %>
+  pool: <%= ENV['DATABASE_POOL'] || ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
 
 development:
-  <<: *default
-  database: db/development.sqlite
+  <<: *login
 
 test:
   <<: *login
@@ -22,7 +16,6 @@ test:
 
 staging:
   <<: *login
-
 
 production:
   <<: *login
