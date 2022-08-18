@@ -12,6 +12,7 @@ gem 'rails', '~> 6.1'
 gem 'activerecord-nulldb-adapter'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
+gem 'pg'
 # Use Puma as the app server
 gem 'puma', '~> 4'
 # Use SCSS for stylesheets
