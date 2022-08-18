@@ -13,7 +13,7 @@ networks:
 services:
 
   solr:
-    image: solr:7.5
+    image: solr:8.4
     ports:
       - 9983:8983
     command: 
