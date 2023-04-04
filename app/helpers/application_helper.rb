@@ -8,7 +8,7 @@ module ApplicationHelper
     url_parts = document['full_image_url_ssm'].first.split('full')
     image_tag(
       url_parts[0] + 'full/200,' + url_parts.last,
-      options.merge(alt: presenter(document).document_heading)
+      options.merge(alt: presenter(document).heading)
     )
   end
 
