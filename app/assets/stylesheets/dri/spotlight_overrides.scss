@@ -85,6 +85,10 @@ a:focus {
     color: $dri_grey !important;
   }
 
+.st-block-controls__button {
+    color: $dri_white;
+}
+
 .pagination > .active > a {
   color: #777777 !important;
   border-color: #ddd !important;
