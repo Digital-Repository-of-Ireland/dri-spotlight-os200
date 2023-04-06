@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/Digital-Repository-of-Ireland/spotlight-resources-dri.git
-  revision: 8c933417b71325341d0f57b4b047ecf8bf1991a2
+  revision: 776bcd5fe60981cf788344b7c53eddefc68d427c
   branch: main
   specs:
-    spotlight-resources-dri (1.0.0)
+    spotlight-resources-dri (1.0.1)
 
 GEM
   remote: https://rubygems.org/
