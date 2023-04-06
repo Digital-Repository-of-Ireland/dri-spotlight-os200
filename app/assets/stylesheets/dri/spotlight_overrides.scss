@@ -66,6 +66,10 @@ a:focus {
   }
 }
 
+.navbar {
+  background-color: $dri_white !important;
+}
+
 .navbar-right > ul > li > a {
     color: $dri_midgrey;
             &:hover {
@@ -76,6 +80,10 @@ a:focus {
                 color: $dri_grey;
             }
 }
+
+#user-util-collapse .nav-link {
+    color: $dri_grey !important;
+  }
 
 .pagination > .active > a {
   color: #777777 !important;
