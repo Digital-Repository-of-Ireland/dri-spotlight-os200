@@ -26,16 +26,21 @@ class CatalogController < ApplicationController
     config.document_unique_id_param = 'ids'
 
     # solr field configuration for search results/index views
+    config.view.index.thumbnail_field = 'thumbnail_url_ssm'
+    config.view.list.thumbnail_field = 'thumbnail_square_url_ssm'
+
     config.index.title_field = 'full_title_tesim'
 
     config.add_search_field 'all_fields', label: 'Everything'
 
     config.add_sort_field 'relevance', sort: 'score desc', label: 'Relevance'
 
-    config.add_facet_field 'readonly_creator_ssim', label: 'Creator', limit: true
-    config.add_facet_field 'readonly_subject_ssim', label: 'Subject', limit: true
-    config.add_facet_field 'readonly_type_ssim', label: 'Type', limit: true
-
+    config.add_facet_field 'readonly_collection_ssim', label: 'Collection'
+    config.add_facet_field 'readonly_author_ssim', label: 'Author', limit: true
+    config.add_facet_field 'readonly_county_ssim', label: 'County', limit: true
+    config.add_facet_field 'readonly_townland_ssim', label: 'Townland', limit: true
+    config.add_facet_field 'readonly_parish_ssim', label: 'Parish', limit: true
+    config.add_facet_field 'readonly_year_ssim', label: 'Year', limit: true
     config.add_facet_fields_to_solr_request!
 
     config.add_field_configuration_to_solr_request!
