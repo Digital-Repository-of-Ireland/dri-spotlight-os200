@@ -10,12 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_17_131759) do
+ActiveRecord::Schema.define(version: 2023_04_17_135552) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
-  create_table "bookmarks", id: :serial, force: :cascade do |t|
+  create_table "bookmarks", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "user_type"
     t.string "document_id"
@@ -28,7 +25,7 @@ ActiveRecord::Schema.define(version: 2022_08_17_131759) do
     t.index ["user_id"], name: "index_bookmarks_on_user_id"
   end
 
-  create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|
+  create_table "friendly_id_slugs", force: :cascade do |t|
     t.string "slug", null: false
     t.integer "sluggable_id", null: false
     t.string "sluggable_type", limit: 50
@@ -40,7 +37,16 @@ ActiveRecord::Schema.define(version: 2022_08_17_131759) do
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
   end
 
-  create_table "searches", id: :serial, force: :cascade do |t|
+  create_table "repository_accounts", force: :cascade do |t|
+    t.string "email"
+    t.string "token"
+    t.integer "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_repository_accounts_on_user_id"
+  end
+
+  create_table "searches", force: :cascade do |t|
     t.binary "query_params"
     t.integer "user_id"
     t.string "user_type"
@@ -49,7 +55,7 @@ ActiveRecord::Schema.define(version: 2022_08_17_131759) do
     t.index ["user_id"], name: "index_searches_on_user_id"
   end
 
-  create_table "spotlight_attachments", id: :serial, force: :cascade do |t|
+  create_table "spotlight_attachments", force: :cascade do |t|
     t.string "name"
     t.string "file"
     t.string "uid"
@@ -58,7 +64,7 @@ ActiveRecord::Schema.define(version: 2022_08_17_131759) do
     t.datetime "updated_at"
   end
 
-  create_table "spotlight_blacklight_configurations", id: :serial, force: :cascade do |t|
+  create_table "spotlight_blacklight_configurations", force: :cascade do |t|
     t.integer "exhibit_id"
     t.text "facet_fields"
     t.text "index_fields"
@@ -77,13 +83,13 @@ ActiveRecord::Schema.define(version: 2022_08_17_131759) do
 
   create_table "spotlight_bulk_updates", force: :cascade do |t|
     t.string "file", null: false
-    t.bigint "exhibit_id"
+    t.integer "exhibit_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["exhibit_id"], name: "index_spotlight_bulk_updates_on_exhibit_id"
   end
 
-  create_table "spotlight_contact_emails", id: :serial, force: :cascade do |t|
+  create_table "spotlight_contact_emails", force: :cascade do |t|
     t.integer "exhibit_id"
     t.string "email", default: "", null: false
     t.string "confirmation_token"
@@ -96,7 +102,7 @@ ActiveRecord::Schema.define(version: 2022_08_17_131759) do
     t.index ["email", "exhibit_id"], name: "index_spotlight_contact_emails_on_email_and_exhibit_id", unique: true
   end
 
-  create_table "spotlight_contacts", id: :serial, force: :cascade do |t|
+  create_table "spotlight_contacts", force: :cascade do |t|
     t.string "slug"
     t.string "name"
     t.string "email"
@@ -119,7 +125,7 @@ ActiveRecord::Schema.define(version: 2022_08_17_131759) do
     t.index ["exhibit_id"], name: "index_spotlight_contacts_on_exhibit_id"
   end
 
-  create_table "spotlight_custom_fields", id: :serial, force: :cascade do |t|
+  create_table "spotlight_custom_fields", force: :cascade do |t|
     t.integer "exhibit_id"
     t.string "slug"
     t.string "field"
@@ -135,16 +141,16 @@ ActiveRecord::Schema.define(version: 2022_08_17_131759) do
     t.string "slug"
     t.string "field"
     t.text "configuration"
-    t.bigint "exhibit_id"
+    t.integer "exhibit_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["exhibit_id"], name: "index_spotlight_custom_search_fields_on_exhibit_id"
   end
 
   create_table "spotlight_events", force: :cascade do |t|
-    t.bigint "exhibit_id"
+    t.integer "exhibit_id"
     t.string "resource_type", null: false
-    t.bigint "resource_id", null: false
+    t.integer "resource_id", null: false
     t.string "type"
     t.string "collation_key"
     t.text "data"
@@ -154,7 +160,7 @@ ActiveRecord::Schema.define(version: 2022_08_17_131759) do
     t.index ["resource_type", "resource_id"], name: "index_spotlight_events_on_resource_type_and_resource_id"
   end
 
-  create_table "spotlight_exhibits", id: :serial, force: :cascade do |t|
+  create_table "spotlight_exhibits", force: :cascade do |t|
     t.string "title", null: false
     t.string "subtitle"
     t.string "slug"
@@ -176,7 +182,7 @@ ActiveRecord::Schema.define(version: 2022_08_17_131759) do
     t.index ["thumbnail_id"], name: "index_spotlight_exhibits_on_thumbnail_id"
   end
 
-  create_table "spotlight_featured_images", id: :serial, force: :cascade do |t|
+  create_table "spotlight_featured_images", force: :cascade do |t|
     t.string "type"
     t.boolean "display"
     t.string "image"
@@ -195,7 +201,7 @@ ActiveRecord::Schema.define(version: 2022_08_17_131759) do
     t.string "iiif_tilesource"
   end
 
-  create_table "spotlight_filters", id: :serial, force: :cascade do |t|
+  create_table "spotlight_filters", force: :cascade do |t|
     t.string "field"
     t.string "value"
     t.integer "exhibit_id"
@@ -207,7 +213,7 @@ ActiveRecord::Schema.define(version: 2022_08_17_131759) do
   create_table "spotlight_groups", force: :cascade do |t|
     t.string "slug"
     t.text "title"
-    t.bigint "exhibit_id"
+    t.integer "exhibit_id"
     t.integer "weight", default: 50
     t.boolean "published"
     t.datetime "created_at", null: false
@@ -216,24 +222,24 @@ ActiveRecord::Schema.define(version: 2022_08_17_131759) do
   end
 
   create_table "spotlight_groups_members", id: false, force: :cascade do |t|
-    t.bigint "group_id"
+    t.integer "group_id"
     t.string "member_type"
-    t.bigint "member_id"
+    t.integer "member_id"
     t.index ["group_id"], name: "index_spotlight_groups_members_on_group_id"
     t.index ["member_type", "member_id"], name: "index_spotlight_groups_members_on_member_type_and_member_id"
   end
 
   create_table "spotlight_job_trackers", force: :cascade do |t|
     t.string "on_type", null: false
-    t.bigint "on_id", null: false
+    t.integer "on_id", null: false
     t.string "resource_type", null: false
-    t.bigint "resource_id", null: false
+    t.integer "resource_id", null: false
     t.string "job_id"
     t.string "job_class"
     t.string "parent_job_id"
     t.string "parent_job_class"
     t.string "status"
-    t.bigint "user_id"
+    t.integer "user_id"
     t.text "log"
     t.text "data"
     t.datetime "created_at", null: false
@@ -244,7 +250,7 @@ ActiveRecord::Schema.define(version: 2022_08_17_131759) do
     t.index ["user_id"], name: "index_spotlight_job_trackers_on_user_id"
   end
 
-  create_table "spotlight_languages", id: :serial, force: :cascade do |t|
+  create_table "spotlight_languages", force: :cascade do |t|
     t.string "locale", null: false
     t.boolean "public"
     t.string "text"
@@ -254,7 +260,7 @@ ActiveRecord::Schema.define(version: 2022_08_17_131759) do
     t.index ["exhibit_id"], name: "index_spotlight_languages_on_exhibit_id"
   end
 
-  create_table "spotlight_locks", id: :serial, force: :cascade do |t|
+  create_table "spotlight_locks", force: :cascade do |t|
     t.string "on_type"
     t.integer "on_id"
     t.string "by_type"
@@ -264,7 +270,7 @@ ActiveRecord::Schema.define(version: 2022_08_17_131759) do
     t.index ["on_id", "on_type"], name: "index_spotlight_locks_on_on_id_and_on_type", unique: true
   end
 
-  create_table "spotlight_main_navigations", id: :serial, force: :cascade do |t|
+  create_table "spotlight_main_navigations", force: :cascade do |t|
     t.string "label"
     t.integer "weight", default: 20
     t.string "nav_type"
@@ -275,12 +281,12 @@ ActiveRecord::Schema.define(version: 2022_08_17_131759) do
     t.index ["exhibit_id"], name: "index_spotlight_main_navigations_on_exhibit_id"
   end
 
-  create_table "spotlight_pages", id: :serial, force: :cascade do |t|
+  create_table "spotlight_pages", force: :cascade do |t|
     t.string "title"
     t.string "type"
     t.string "slug"
     t.string "scope"
-    t.text "content"
+    t.text "content", limit: 16777215
     t.integer "weight", default: 1000
     t.boolean "published"
     t.integer "exhibit_id"
@@ -303,7 +309,7 @@ ActiveRecord::Schema.define(version: 2022_08_17_131759) do
     t.index ["thumbnail_id"], name: "index_spotlight_pages_on_thumbnail_id"
   end
 
-  create_table "spotlight_reindexing_log_entries", id: :serial, force: :cascade do |t|
+  create_table "spotlight_reindexing_log_entries", force: :cascade do |t|
     t.integer "items_reindexed_count"
     t.integer "items_reindexed_estimate"
     t.datetime "start_time"
@@ -315,7 +321,7 @@ ActiveRecord::Schema.define(version: 2022_08_17_131759) do
     t.datetime "updated_at"
   end
 
-  create_table "spotlight_resources", id: :serial, force: :cascade do |t|
+  create_table "spotlight_resources", force: :cascade do |t|
     t.integer "exhibit_id"
     t.string "type"
     t.string "url"
@@ -330,7 +336,7 @@ ActiveRecord::Schema.define(version: 2022_08_17_131759) do
     t.index ["upload_id"], name: "index_spotlight_resources_on_upload_id"
   end
 
-  create_table "spotlight_roles", id: :serial, force: :cascade do |t|
+  create_table "spotlight_roles", force: :cascade do |t|
     t.integer "user_id"
     t.string "role"
     t.integer "resource_id"
@@ -338,7 +344,7 @@ ActiveRecord::Schema.define(version: 2022_08_17_131759) do
     t.index ["resource_type", "resource_id", "user_id"], name: "index_spotlight_roles_on_resource_and_user_id", unique: true
   end
 
-  create_table "spotlight_searches", id: :serial, force: :cascade do |t|
+  create_table "spotlight_searches", force: :cascade do |t|
     t.string "title"
     t.string "slug"
     t.string "scope"
@@ -362,13 +368,13 @@ ActiveRecord::Schema.define(version: 2022_08_17_131759) do
     t.index ["thumbnail_id"], name: "index_spotlight_searches_on_thumbnail_id"
   end
 
-  create_table "spotlight_sites", id: :serial, force: :cascade do |t|
+  create_table "spotlight_sites", force: :cascade do |t|
     t.string "title"
     t.string "subtitle"
     t.integer "masthead_id"
   end
 
-  create_table "spotlight_solr_document_sidecars", id: :serial, force: :cascade do |t|
+  create_table "spotlight_solr_document_sidecars", force: :cascade do |t|
     t.integer "exhibit_id"
     t.boolean "public", default: true
     t.text "data"
@@ -378,7 +384,7 @@ ActiveRecord::Schema.define(version: 2022_08_17_131759) do
     t.string "document_type"
     t.integer "resource_id"
     t.string "resource_type"
-    t.binary "index_status"
+    t.binary "index_status", limit: 10485760
     t.index ["document_type", "document_id"], name: "spotlight_solr_document_sidecars_solr_document"
     t.index ["exhibit_id", "document_type", "document_id"], name: "by_exhibit_and_doc", unique: true
     t.index ["exhibit_id", "document_type", "document_id"], name: "spotlight_solr_document_sidecars_exhibit_document"
@@ -386,7 +392,7 @@ ActiveRecord::Schema.define(version: 2022_08_17_131759) do
     t.index ["resource_type", "resource_id"], name: "spotlight_solr_document_sidecars_resource"
   end
 
-  create_table "taggings", id: :serial, force: :cascade do |t|
+  create_table "taggings", force: :cascade do |t|
     t.integer "tag_id"
     t.integer "taggable_id"
     t.string "taggable_type"
@@ -405,13 +411,13 @@ ActiveRecord::Schema.define(version: 2022_08_17_131759) do
     t.index ["tagger_id"], name: "index_taggings_on_tagger_id"
   end
 
-  create_table "tags", id: :serial, force: :cascade do |t|
+  create_table "tags", force: :cascade do |t|
     t.string "name"
     t.integer "taggings_count", default: 0
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
-  create_table "translations", id: :serial, force: :cascade do |t|
+  create_table "translations", force: :cascade do |t|
     t.string "locale"
     t.string "key"
     t.text "value"
@@ -444,7 +450,7 @@ ActiveRecord::Schema.define(version: 2022_08_17_131759) do
     t.datetime "invitation_accepted_at"
     t.integer "invitation_limit"
     t.string "invited_by_type"
-    t.bigint "invited_by_id"
+    t.integer "invited_by_id"
     t.integer "invitations_count", default: 0
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
@@ -460,9 +466,10 @@ ActiveRecord::Schema.define(version: 2022_08_17_131759) do
     t.integer "item_id", null: false
     t.string "event", null: false
     t.string "whodunnit"
-    t.text "object"
+    t.text "object", limit: 1073741823
     t.datetime "created_at"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
+  add_foreign_key "repository_accounts", "users"
 end
