@@ -4,8 +4,8 @@ class CatalogController < ApplicationController
   include Blacklight::Catalog
 
   configure_blacklight do |config|
-          config.show.oembed_field = :oembed_url_ssm
-          config.show.partials.insert(1, :oembed)
+    config.show.oembed_field = :oembed_url_ssm
+    config.show.partials.insert(1, :oembed)
 
     config.view.gallery.partials = [:index_header, :index]
     config.view.masonry.partials = [:index]
