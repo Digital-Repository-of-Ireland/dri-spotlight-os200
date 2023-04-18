@@ -99,6 +99,9 @@ module Spotlight
         solr_hash['readonly_county_ssim'] = dri_object.county
         solr_hash['readonly_townland_ssim'] = dri_object.townland
         solr_hash['readonly_parish_ssim'] = dri_object.parish
+        solr_hash['readonly_county_tesim'] = dri_object.county
+        solr_hash['readonly_townland_tesim'] = dri_object.townland
+        solr_hash['readonly_parish_tesim'] = dri_object.parish
       end
 
       def add_type_facet
