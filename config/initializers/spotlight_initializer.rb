@@ -33,7 +33,7 @@
 # Spotlight::Engine.config.solr_fields.text_suffix = '_tesim'.freeze
 # Spotlight::Engine.config.resource_global_id_field = :"#{config.solr_fields.prefix}spotlight_resource_id#{config.solr_fields.string_suffix}"
 # Spotlight::Engine.config.full_image_field = :full_image_url_ssm
-# Spotlight::Engine.config.thumbnail_field = :thumbnail_url_ssm
+Spotlight::Engine.config.thumbnail_field = :thumbnail_url_ssm
 
 # ==> Uploaded item configuration
 # Spotlight::Engine.config.upload_fields = [
@@ -44,6 +44,7 @@
 # Spotlight::Engine.config.upload_title_field = nil # OpenStruct.new(...)
 # Spotlight::Engine.config.uploader_storage = :file
 # Spotlight::Engine.config.allowed_upload_extensions = %w(jpg jpeg png)
+Spotlight::Engine.config.uploader_storage_path = 'os200/uploads'
 
 # Spotlight::Engine.config.featured_image_thumb_size = [400, 300]
 # Spotlight::Engine.config.featured_image_square_size = [400, 400]
