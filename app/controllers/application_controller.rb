@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   include Blacklight::Controller
   include Spotlight::Controller
 
-  layout 'blacklight'
+  layout 'spotlight/spotlight'
 
   protect_from_forgery with: :exception
 end
