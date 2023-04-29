@@ -10,6 +10,12 @@
     previousButton:   "osd-previous"
   }
 
+  if current_user && current_user.repository_accounts.any?
+    header = "#{current_user.repository_accounts.first.email}:#{current_user.repository_accounts.first.token}"
+    osd_config[:loadTilesWithAjax] = true
+    osd_config[:ajaxHeaders] = { "Authorization": "Basic #{Base64.strict_encode64(header)}" }
+  end
+
   osd_config_referencestrip = {
     sequenceMode: true,
     showReferenceStrip:             false,
@@ -41,5 +47,4 @@
     </div>
     <%= openseadragon_picture_tag image, class: 'osd-image row', data: { openseadragon: osd_config } %>
   </div>
-
 <% end %>
