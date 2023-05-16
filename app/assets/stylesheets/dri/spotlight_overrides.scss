@@ -85,6 +85,13 @@ a:focus {
     color: $dri_grey !important;
   }
 
+.image-masthead .exhibit-navbar .navbar-nav {
+  text-transform: capitalize !important;
+}
+
+.image-masthead .exhibit-navbar .navbar-nav .nav-link {
+  color: $dri_midgrey !important;
+}
 .st-block-controls__button {
     color: $dri_white;
 }
@@ -114,4 +121,8 @@ a:focus {
 .openseadragon-container {
   display: block;
   min-height: 300px;
+}
+
+.form-check-label {
+  margin-bottom: 0.5rem !important;
 }
