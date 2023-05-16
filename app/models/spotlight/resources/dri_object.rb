@@ -264,6 +264,8 @@ module Spotlight
           case root_title
           when 'ordnance survey of ireland letters'
             'OS Letters'
+          when 'ordnance survey first edition 6-inch map sheet information'
+            'OS Maps'
           end
         end
 
