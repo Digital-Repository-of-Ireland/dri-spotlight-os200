@@ -22,5 +22,7 @@
 //= require blacklight/blacklight
 //= require blacklight_gallery
 
+//= require openlayers/ol
+//= require ol-layerswitcher/ol-layerswitcher
+//= require proj4js/proj4
 
-//= require_tree .

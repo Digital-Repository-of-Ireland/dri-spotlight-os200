@@ -2,3 +2,6 @@
 //= link application.js
 //= link application.css
 //= link openseadragon-assets.js
+//= link map.js
+//= link openlayers/theme/default/style.css
+//= link ol-layerswitcher/ol-layerswitcher.css
