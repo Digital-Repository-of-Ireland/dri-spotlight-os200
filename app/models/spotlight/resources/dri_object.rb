@@ -96,7 +96,7 @@ module Spotlight
         return unless metadata.key?('geographical_coverage') && metadata['geographical_coverage'].present?
         solr_hash['readonly_geographical_coverage_ssim'] = metadata['geographical_coverage']
 
-        solr_hash['readonly_varony_ssim'] = dri_object.barony
+        solr_hash['readonly_barony_ssim'] = dri_object.barony
         solr_hash['readonly_county_ssim'] = dri_object.county
         solr_hash['readonly_townland_ssim'] = dri_object.townland
         solr_hash['readonly_parish_ssim'] = dri_object.parish
