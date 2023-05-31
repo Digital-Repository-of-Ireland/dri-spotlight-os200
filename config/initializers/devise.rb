@@ -325,3 +325,15 @@ Devise.setup do |config|
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = '/my_engine/users/auth'
 end
+
+Warden::Manager.after_set_user do |user,auth,opts|
+  if user.repository_accounts.any?
+    header = "#{user.repository_accounts.first.email}:#{user.repository_accounts.first.token}"
+    auth.cookies[:repo_auth] = Base64.strict_encode64(header)
+  end
+end
+
+Warden::Manager.before_logout do |user,auth,opts|
+  auth.cookies.delete :repo_auth
+end
+

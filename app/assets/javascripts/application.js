@@ -21,6 +21,5 @@
 //= require bootstrap
 //= require blacklight/blacklight
 //= require blacklight_gallery
-
-
+//= require js.cookie
 //= require_tree .
