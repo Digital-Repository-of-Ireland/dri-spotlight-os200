@@ -96,6 +96,7 @@ module Spotlight
         return unless metadata.key?('geographical_coverage') && metadata['geographical_coverage'].present?
         solr_hash['readonly_geographical_coverage_ssim'] = metadata['geographical_coverage']
 
+        solr_hash['readonly_varony_ssim'] = dri_object.barony
         solr_hash['readonly_county_ssim'] = dri_object.county
         solr_hash['readonly_townland_ssim'] = dri_object.townland
         solr_hash['readonly_parish_ssim'] = dri_object.parish
@@ -280,28 +281,31 @@ module Spotlight
           return metadata['role_aut'] unless metadata.key?('role_aut') && metadata['role_aut'].present?
         end
 
-        def county
-          return unless metadata.key?('geographical_coverage') && metadata['geographical_coverage'].present?
-          c = metadata['geographical_coverage'].select { |s| dcmi_name([s]).first.downcase.include?('county') }
-          return if c.empty?
+        def barony
+          region('barony')
+        end
 
-          c
+        def county
+          region('county')
         end
 
         def parish
-          return unless metadata.key?('geographical_coverage') && metadata['geographical_coverage'].present?
-          p = metadata['geographical_coverage'].select { |s| dcmi_name([s]).first.downcase.include?('parish') }
-          return if p.empty?
-
-          p
+          region('parish')
         end
 
         def townland
-          return unless metadata.key?('geographical_coverage') && metadata['geographical_coverage'].present?
-          t = metadata['geographical_coverage'].select { |s| dcmi_name([s]).first.downcase.include?('townland') }
+          t = region('townland')
           return if t.empty?
 
           dcmi_name(t)
+        end
+
+        def region(key)
+          return unless metadata.key?('geographical_coverage') && metadata['geographical_coverage'].present?
+          r = metadata['geographical_coverage'].select { |s| dcmi_name([s]).first.downcase.include?(key) }
+          return if r.empty?
+
+          r
         end
 
         def year
@@ -353,6 +357,9 @@ module Spotlight
             when 'geographical_coverage'
               add_dcmi_field(field, hash)
               next
+            when 'barony'
+              add_barony(field, hash)
+              next
             when 'collection'
               add_collection(field, hash)
               next
@@ -380,7 +387,7 @@ module Spotlight
         end
 
         def desc_metadata_fields
-          %w(description doi creator author year subject county townload parish collection geographical_coverage temporal_coverage type attribution rights license)
+          %w(description doi creator author year subject barony county townload parish collection geographical_coverage temporal_coverage type attribution rights license)
         end
 
         def add_attribution(field, hash)
@@ -406,6 +413,11 @@ module Spotlight
           if metadata['doi'].present? && metadata['doi'].first.key?('url')
             hash[field.capitalize] = metadata['doi'].first['url']
           end
+        end
+
+        def add_barony(field, hash)
+          hash[field.capitalize] ||= []
+          hash[field.capitalize] = barony
         end
 
         def add_collection(field, hash)
