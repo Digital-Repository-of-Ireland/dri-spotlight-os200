@@ -2,7 +2,10 @@ proj4.defs(
   'EPSG:2157','+proj=tmerc +lat_0=53.5 +lon_0=-8 +k=0.99982 +x_0=600000 +y_0=750000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs'
 );
 ol.proj.proj4.register(proj4);
-const irishProjection = ol.proj.get('EPSG:2157');
+const irishProjection = new ol.proj.Projection({
+        code: 'EPSG:2157',
+        extent: [421849.81, 515251.59, 785108.1, 968015.39]
+});
 
 const parser = new ol.format.WMTSCapabilities();
 let map;
@@ -23,10 +26,11 @@ function getCapabilities(file, layer, matrixSet){
 let basemapCapabilities = getCapabilities('data/WMTSCapabilitiesBM.xml', 'ITM_basemap_ms_premium', 'default028mm');
 let historicCapabilities = getCapabilities('data/WMTSCapabilities.xml', 'ITM_historic_6inch_cl', 'default028mm');
 
-const vectorSource = new ol.source.Vector({
-	format: new ol.format.GeoJSON(),
-	url: './data/townlands-simplified.json',
-});
+const tileSource = new ol.source.TileWMS({
+      url: $('#map').data('townland-source')
+      params: {'LAYERS': $('#map').data('townland-layer'), 'TILED': true},
+      serverType: 'geoserver'
+})
 
 map = new ol.Map({
        layers: [
@@ -50,19 +54,20 @@ map = new ol.Map({
 	 new ol.layer.Group({
            title: 'Overlays',
            layers: [
-             new ol.layer.Vector({
+             new ol.layer.Tile({
 	       title: 'Townlands',
 	       visible: false,
-	       source: vectorSource,
+               opacity: 0.3,
+	       source: tileSource,
 	     })
 	   ]
          })
        ],
       target: 'map',
       view: new ol.View({
-	center: [600_000, 800_000],
-        zoom: 9,
-	projection: irishProjection
+        center: ol.proj.fromLonLat([-7.5,53.4]),
+        zoom: 8,
+        projection: 'EPSG:3857'
       }),
 });
 
