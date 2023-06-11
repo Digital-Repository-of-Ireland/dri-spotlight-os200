@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Capabilities xmlns="http://www.opengis.net/wmts/1.0"
+xmlns:ows="http://www.opengis.net/ows/1.1"
+xmlns:xlink="http://www.w3.org/1999/xlink"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:gml="http://www.opengis.net/gml"
+xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://schemas.opengis.net/wmts/1.0/wmtsGetCapabilities_response.xsd"
+version="1.0.0">
+<!-- Service Identification --> <ows:ServiceIdentification>
+<ows:Title>ITM_historic_6inch_cl</ows:Title>
+<ows:ServiceType>OGC WMTS</ows:ServiceType>
+<ows:ServiceTypeVersion>1.0.0</ows:ServiceTypeVersion>
+</ows:ServiceIdentification> <!-- Operations Metadata --> <ows:OperationsMetadata>
+<ows:Operation name="GetCapabilities">
+<ows:DCP>
+<ows:HTTP>
+<ows:Get xlink:href="http://localhost/data/rest/services/ITM/historic_6inch_cl/MapServer/WMTS/1.0.0/WMTSCapabilities.xml">
+<ows:Constraint name="GetEncoding">
+<ows:AllowedValues>
+<ows:Value>RESTful</ows:Value>
+</ows:AllowedValues>
+</ows:Constraint>
+</ows:Get>
+<!-- add KVP binding in 10.1 -->
+<ows:Get xlink:href="http://localhost/data/rest/services/ITM/historic_6inch_cl/MapServer/WMTS?">
+<ows:Constraint name="GetEncoding">
+<ows:AllowedValues>
+<ows:Value>KVP</ows:Value>
+</ows:AllowedValues>
+</ows:Constraint>
+</ows:Get>
+</ows:HTTP>
+</ows:DCP>
+</ows:Operation>
+<ows:Operation name="GetTile">
+<ows:DCP>
+<ows:HTTP>
+<ows:Get xlink:href="http://localhost/data/rest/services/ITM/historic_6inch_cl/MapServer/WMTS/tile/1.0.0/">
+<ows:Constraint name="GetEncoding">
+<ows:AllowedValues>
+<ows:Value>RESTful</ows:Value>
+</ows:AllowedValues>
+</ows:Constraint>
+</ows:Get>
+<ows:Get xlink:href="http://localhost/data/rest/services/ITM/historic_6inch_cl/MapServer/WMTS?">
+<ows:Constraint name="GetEncoding">
+<ows:AllowedValues>
+<ows:Value>KVP</ows:Value>
+</ows:AllowedValues>
+</ows:Constraint>
+</ows:Get>
+</ows:HTTP>
+</ows:DCP>
+</ows:Operation>
+</ows:OperationsMetadata> <Contents>
+<!--Layer--> <Layer>
+<ows:Title>ITM_historic_6inch_cl</ows:Title> <ows:Identifier>ITM_historic_6inch_cl</ows:Identifier>
+<ows:BoundingBox crs="urn:ogc:def:crs:EPSG::2157">
+<ows:LowerCorner>-8.250633254647255E-4 -3.749355673789978E-4</ows:LowerCorner>
+<ows:UpperCorner>972481.1097714425 1163158.9754053666</ows:UpperCorner>
+</ows:BoundingBox> <ows:WGS84BoundingBox crs="urn:ogc:def:crs:OGC:2:84">
+<ows:LowerCorner>-17.847632256077752 46.48818142915109</ows:LowerCorner>
+<ows:UpperCorner>-1.8548817896334153 57.21179019910237</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+<Style isDefault="true">
+<ows:Title>Default Style</ows:Title>
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/jpgpng</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>default028mm</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/jpgpng" resourceType="tile" template="http://localhost/data/rest/services/ITM/historic_6inch_cl/MapServer/WMTS/tile/1.0.0/ITM_historic_6inch_cl/{Style}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}" />
+</Layer> <!--TileMatrixSet-->
+<TileMatrixSet>
+<ows:Title>TileMatrix using 0.28mm</ows:Title>
+<ows:Abstract>The tile matrix set that has scale values calculated based on the dpi defined by OGC specification (dpi assumes 0.28mm as the physical distance of a pixel).</ows:Abstract> <ows:Identifier>default028mm</ows:Identifier>
+<ows:SupportedCRS>urn:ogc:def:crs:EPSG::2157</ows:SupportedCRS>
+<TileMatrix>
+<ows:Identifier>0</ows:Identifier>
+<ScaleDenominator>3779769.4643003587</ScaleDenominator>
+<TopLeftCorner>-5022200.0 4821100.0</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight>
+<MatrixWidth>23</MatrixWidth> <MatrixHeight>18</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>1</ows:Identifier>
+<ScaleDenominator>2362355.915187724</ScaleDenominator>
+<TopLeftCorner>-5022200.0 4821100.0</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight>
+<MatrixWidth>36</MatrixWidth> <MatrixHeight>29</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>2</ows:Identifier>
+<ScaleDenominator>1181177.957593862</ScaleDenominator>
+<TopLeftCorner>-5022200.0 4821100.0</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight>
+<MatrixWidth>71</MatrixWidth> <MatrixHeight>57</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>3</ows:Identifier>
+<ScaleDenominator>566965.4196450538</ScaleDenominator>
+<TopLeftCorner>-5022200.0 4821100.0</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight>
+<MatrixWidth>148</MatrixWidth> <MatrixHeight>119</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>4</ows:Identifier>
+<ScaleDenominator>377976.9464300358</ScaleDenominator>
+<TopLeftCorner>-5022200.0 4821100.0</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight>
+<MatrixWidth>222</MatrixWidth> <MatrixHeight>178</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>5</ows:Identifier>
+<ScaleDenominator>188988.4732150179</ScaleDenominator>
+<TopLeftCorner>-5022200.0 4821100.0</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight>
+<MatrixWidth>443</MatrixWidth> <MatrixHeight>356</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>6</ows:Identifier>
+<ScaleDenominator>94494.23660750895</ScaleDenominator>
+<TopLeftCorner>-5022200.0 4821100.0</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight>
+<MatrixWidth>886</MatrixWidth> <MatrixHeight>712</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>7</ows:Identifier>
+<ScaleDenominator>47247.118303754476</ScaleDenominator>
+<TopLeftCorner>-5022200.0 4821100.0</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight>
+<MatrixWidth>1771</MatrixWidth> <MatrixHeight>1424</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>8</ows:Identifier>
+<ScaleDenominator>23623.559151877238</ScaleDenominator>
+<TopLeftCorner>-5022200.0 4821100.0</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight>
+<MatrixWidth>3541</MatrixWidth> <MatrixHeight>2848</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>9</ows:Identifier>
+<ScaleDenominator>9449.423660750896</ScaleDenominator>
+<TopLeftCorner>-5022200.0 4821100.0</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight>
+<MatrixWidth>8851</MatrixWidth> <MatrixHeight>7118</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>10</ows:Identifier>
+<ScaleDenominator>4724.711830375448</ScaleDenominator>
+<TopLeftCorner>-5022200.0 4821100.0</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight>
+<MatrixWidth>17701</MatrixWidth> <MatrixHeight>14236</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>11</ows:Identifier>
+<ScaleDenominator>2362.355915187724</ScaleDenominator>
+<TopLeftCorner>-5022200.0 4821100.0</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight>
+<MatrixWidth>35402</MatrixWidth> <MatrixHeight>28472</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>12</ows:Identifier>
+<ScaleDenominator>944.9423660750896</ScaleDenominator>
+<TopLeftCorner>-5022200.0 4821100.0</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight>
+<MatrixWidth>88504</MatrixWidth> <MatrixHeight>71178</MatrixHeight>
+</TileMatrix>
+</TileMatrixSet>
+</Contents>
+<ServiceMetadataURL xlink:href="http://localhost/data/rest/services/ITM/historic_6inch_cl/MapServer/WMTS/1.0.0/WMTSCapabilities.xml" /> </Capabilities>
