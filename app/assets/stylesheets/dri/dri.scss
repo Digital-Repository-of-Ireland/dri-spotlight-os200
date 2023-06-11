@@ -1,3 +1,14 @@
-// Load partials
-@import 'base';
-@import 'header';
+button.dri_open_button {
+    color: #FFF;
+    border: none;
+    background-color: $dri_green;
+    padding: 0;
+    margin: 20px 0 20px 0;
+    width: 60%;
+    height: 26px;
+    display: block;
+    @include border_radius;
+    &:hover {
+        background-color: darken($dri_green, 6%);
+    }
+}

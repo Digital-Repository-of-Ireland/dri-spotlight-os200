@@ -23,11 +23,11 @@ function getCapabilities(file, layer, matrixSet){
     });
   return options;
 }
-let basemapCapabilities = getCapabilities('data/WMTSCapabilitiesBM.xml', 'ITM_basemap_ms_premium', 'default028mm');
-let historicCapabilities = getCapabilities('data/WMTSCapabilities.xml', 'ITM_historic_6inch_cl', 'default028mm');
+let basemapCapabilities = getCapabilities('/data/WMTSCapabilitiesBM.xml', 'ITM_basemap_ms_premium', 'default028mm');
+let historicCapabilities = getCapabilities('/data/WMTSCapabilities.xml', 'ITM_historic_6inch_cl', 'default028mm');
 
 const tileSource = new ol.source.TileWMS({
-      url: $('#map').data('townland-source')
+      url: $('#map').data('townland-source'),
       params: {'LAYERS': $('#map').data('townland-layer'), 'TILED': true},
       serverType: 'geoserver'
 })
@@ -66,7 +66,7 @@ map = new ol.Map({
       target: 'map',
       view: new ol.View({
         center: ol.proj.fromLonLat([-7.5,53.4]),
-        zoom: 8,
+        zoom: 7,
         projection: 'EPSG:3857'
       }),
 });
