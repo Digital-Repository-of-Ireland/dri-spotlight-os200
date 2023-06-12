@@ -26,5 +26,5 @@
 //= require openlayers/ol
 //= require ol-layerswitcher/ol-layerswitcher
 //= require proj4js/proj4
-
 //= require js.cookie
+//= require auth_images 
