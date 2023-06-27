@@ -11,4 +11,4 @@
 
 <%= content_tag(:div, id: 'map', class: 'map', data: { townland_source: 'http://localhost:8080/geoserver/wms', townland_layer: 'os200_townlands:OS200 Townlands' }) do %>
 <% end %>
-<%= javascript_include_tag 'map' %>
+<%= javascript_tag "$('#map').dri_openlayers_map(#{@geojson_features});" %>

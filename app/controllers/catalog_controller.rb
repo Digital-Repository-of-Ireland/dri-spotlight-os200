@@ -51,4 +51,34 @@ class CatalogController < ApplicationController
     # Set which views by default only have the title displayed, e.g.,
     # config.view.gallery.title_only_by_default = true
   end
+
+  # get a single document from the index
+  # to add responses for formats other than html or json see _Blacklight::Document::Export_
+  def show
+    deprecated_response, @document = search_service.fetch(params[:id])
+    @response = ActiveSupport::Deprecation::DeprecatedObjectProxy.new(deprecated_response, 'The @response instance variable is deprecated; use @document.response instead.')
+    @geojson_features = map_points.to_json
+    
+    respond_to do |format|
+      format.html { @search_context = setup_next_and_previous_documents }
+      format.json
+      additional_export_formats(@document, format)
+    end
+  end
+
+  private
+
+  def map_points
+    features_collection = { type: "FeatureCollection" }
+    features = []
+    @document['readonly_geographical_coverage_ssim'].each do |geo|
+      parsed_point = @document.parse_dcmi_point(geo)
+      
+      if parsed_point.key?(:json) && parsed_point[:json].present?
+        features << parsed_point[:json]
+      end
+    end
+    features_collection[:features] = features
+    features_collection
+  end
 end
