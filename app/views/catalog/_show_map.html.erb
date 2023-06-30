@@ -10,11 +10,11 @@
 <% end %>
 <div class="content-block">
 
-<%= content_tag(:div, id: 'map', class: 'map', data: { townland_source: 'http://localhost:8080/geoserver/wms', townland_layer: 'os200_townlands:OS200 Townlands' }) do %>
+<%= content_tag(:div, id: 'map', class: 'map', data: { townland_source: Mapping.geoserver, townland_layer: Mapping.geoserver_layer }) do %>
   <div id="popup" class="ol-popup">
     <a href="#" id="popup-closer" class="ol-popup-closer"></a>
     <div id="popup-content"></div>
   </div>
 <% end %>
 
-<%= javascript_tag "$('#map').dri_openlayers_map(#{@geojson_features});" %>
+<%= javascript_tag "$('#map').dri_openlayers_map(#{@geojson_features}, \"#{@access_token}\");" %>

@@ -1,5 +1,5 @@
 ;(function( $ ) {
-  $.fn.dri_openlayers_map = function(geojson_docs, arg_opts) {
+  $.fn.dri_openlayers_map = function(geojson_docs, token, arg_opts) {
     proj4.defs(
       'EPSG:2157','+proj=tmerc +lat_0=53.5 +lon_0=-8 +k=0.99982 +x_0=600000 +y_0=750000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs'
     );
@@ -11,22 +11,50 @@
 
     const parser = new ol.format.WMTSCapabilities();
     let map;
-
-    function getCapabilities(file, layer, matrixSet){
-      var request = new XMLHttpRequest();
-      request.open("GET", file, false);
-      request.send();
-      var xml = request.responseXML;
-      const result = parser.read(xml);
-      const options = ol.source.WMTS.optionsFromCapabilities(result, {
-          layer: layer,
-          matrixSet: matrixSet,
-          projection: irishProjection
-        });
-      return options;
+   
+    function getServiceJson(){
+      const serviceRequest = new XMLHttpRequest();
+      serviceRequest.open("GET", 'https://tiles-eu1.arcgis.com/FH5XCsx8rYXqnjF5/arcgis/rest/services/MapGeniePremiumITM/MapServer?f=json&token=' + token, false);
+      serviceRequest.send();
+      var serviceJson = serviceRequest.responseText;
+      return JSON.parse(serviceJson);
     }
-    let basemapCapabilities = getCapabilities('/data/WMTSCapabilitiesBM.xml', 'ITM_basemap_ms_premium', 'default028mm');
-    let historicCapabilities = getCapabilities('/data/WMTSCapabilities.xml', 'ITM_historic_6inch_cl', 'default028mm');
+    
+    const serviceJson = getServiceJson();
+    const extent = [
+          serviceJson.fullExtent.xmin,
+          serviceJson.fullExtent.ymin,
+          serviceJson.fullExtent.xmax,
+          serviceJson.fullExtent.ymax,
+        ];
+    const origin = [
+      serviceJson.tileInfo.origin.x,
+      serviceJson.tileInfo.origin.y,
+    ];
+    const resolutions = serviceJson.tileInfo.lods.map(function(l) { return l.resolution; });
+    const tileSize = [serviceJson.tileInfo.cols, serviceJson.tileInfo.rows];
+    const tileGrid = new ol.tilegrid.TileGrid({
+       extent: extent,
+       origin: origin,
+       resolutions: resolutions,
+       tileSize: tileSize,
+    });
+
+    const osiBasemapSource = new ol.source.XYZ({
+        url:
+          'https://tiles-eu1.arcgis.com/FH5XCsx8rYXqnjF5/arcgis/rest/services/MapGeniePremiumITM/MapServer/tile/{z}/{y}/{x}' +
+          '?token=' + token,
+        projection: irishProjection,
+        tileGrid: tileGrid,
+      });
+
+    const historicBasemapSource = new ol.source.XYZ({
+        url:
+          'https://tiles-eu1.arcgis.com/FH5XCsx8rYXqnjF5/arcgis/rest/services/MapGenie6InchFirstEditionColourITM/MapServer/tile/{z}/{y}/{x}' +
+          '?token=' + token,
+        projection: irishProjection,
+        tileGrid: tileGrid,
+      });
 
     const tileSource = new ol.source.TileWMS({
           url: $('#map').data('townland-source'),
@@ -44,8 +72,8 @@
                        })
     })
 
-    var geojsonSource = new ol.source.Vector();
-    var geojsonLayer = new ol.layer.Vector({
+    const geojsonSource = new ol.source.Vector();
+    const geojsonLayer = new ol.layer.Vector({
         title: 'Points',
         visible: true,
         source: geojsonSource,
@@ -61,13 +89,13 @@
                    title: 'Historic',
                    type: 'base',
                    visible: false,
-                   source: new ol.source.WMTS(historicCapabilities)
+                   source: historicBasemapSource
                  }),
                  new ol.layer.Tile({
                    title: 'OSi',
                    type: 'base',
                    visible: true,
-                   source: new ol.source.WMTS(basemapCapabilities)
+                   source: osiBasemapSource
                  })
     	         ]
              }),

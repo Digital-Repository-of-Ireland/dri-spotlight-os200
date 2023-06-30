@@ -1,0 +1,17 @@
+common: &common
+  username: <%= ENV['ARCGIS_USERNAME'] %>
+  password: <%= ENV['ARCGIS_PASSWORD'] %> 
+ 
+development:
+  <<: *common
+  token_url: "https://www.arcgis.com/sharing"
+  geoserver: "http://localhost:8080/geoserver/wms"
+  geoserver_layer: "os200_townlands:OS200 Townlands" 
+
+test:
+  <<: *common
+
+production:
+  <<: *common
+  geoserver: "https://dri.ie/geoserver/wms"
+  geoserver_layer: "os200:townlands"

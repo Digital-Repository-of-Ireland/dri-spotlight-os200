@@ -58,6 +58,8 @@ class CatalogController < ApplicationController
     deprecated_response, @document = search_service.fetch(params[:id])
     @response = ActiveSupport::Deprecation::DeprecatedObjectProxy.new(deprecated_response, 'The @response instance variable is deprecated; use @document.response instead.')
     @geojson_features = map_points.to_json
+
+    @access_token = ArcGisTokenGenerator.new.token
     
     respond_to do |format|
       format.html { @search_context = setup_next_and_previous_documents }
