@@ -63,7 +63,7 @@ class SolrDocument
 
       value.split(/\s*;\s*/).each do |component|
         (k, v) = component.split(/\s*=\s*/)
-        dcmi_components[k.downcase] = v.strip
+        dcmi_components[k.downcase] = v.strip unless v.nil?
       end
 
       dcmi_components
