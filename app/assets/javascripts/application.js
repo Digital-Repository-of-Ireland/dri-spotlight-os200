@@ -20,6 +20,8 @@
 //= require twitter/typeahead
 //= require bootstrap
 //= require blacklight/blacklight
+// Required by BlacklightMaps
+//= require blacklight-maps
 //= require blacklight_gallery
 //= require openseadragon
 //= require spotlight

@@ -96,6 +96,24 @@ module Spotlight
         return unless metadata.key?('geographical_coverage') && metadata['geographical_coverage'].present?
         solr_hash['readonly_geographical_coverage_ssim'] = metadata['geographical_coverage']
 
+        points = { coords: [], name: [], json: [] }
+        metadata['geographical_coverage'].each do |point| 
+          parsed_point = dri_object.parse_dcmi_point(point)
+
+          points[:coords] << parsed_point[:coords] if parsed_point[:coords].present?
+          points[:name] << parsed_point[:name] if parsed_point[:name].present?
+          points[:json] << parsed_point[:json]
+        end
+        solr_hash["geospatial"] = points[:coords] if points[:coords].present?
+        if points[:name].present?
+          solr_hash["placename_tesim"] = points[:name]
+          solr_hash["placename_sim"] = points[:name]
+        end
+
+        if points[:json].present?
+          solr_hash["geojson_ssim"] = points[:json]
+        end
+
         solr_hash['readonly_barony_ssim'] = dri_object.barony
         solr_hash['readonly_county_ssim'] = dri_object.county
         solr_hash['readonly_townland_ssim'] = dri_object.townland
@@ -329,6 +347,97 @@ module Spotlight
             nil
           end
         end
+
+        POINT_KEYS = %w[east north].freeze
+        PROJECTIONS = { 'itm' => '2157', 'ing' => '29903' }.freeze
+
+        def parse_dcmi_point(geospatial_string)
+            result = {}
+
+            begin
+              point = dcmi_components(geospatial_string)
+            rescue => e
+              Rails.logger.error("Exception in transform_geospatial: #{geospatial_string} => #{e}")
+              return result
+            end
+
+            # [east_long north_lat]
+            if supported_dcmi?(POINT_KEYS, point)
+              if point['projection'].present? && PROJECTIONS.keys.include?(point['projection'].downcase)
+               projection = PROJECTIONS[point['projection'].downcase]
+
+               geometry_crs = { crs: "http://www.opengis.net/def/crs/EPSG/0/#{projection}" }
+               geometry_crs[:coordinates] = [point['east'].delete(',').to_f, point['north'].delete(',').to_f]
+              end
+                       
+              coords = "#{point['east']} #{point['north']}"
+              return result if coords.blank?
+
+              result[:coords] = coords
+              result[:name] = point['name']
+              result[:json] = coords_to_geojson([point['name']], coords, geometry_crs)
+            end
+
+            result
+          end
+
+          def dcmi_components(value = nil)
+            return {} if value.nil?
+
+            dcmi_components = {}
+
+            value.split(/\s*;\s*/).each do |component|
+              (k, v) = component.split(/\s*=\s*/)
+              dcmi_components[k.downcase] = v.strip unless v.nil?
+            end
+
+            dcmi_components
+          end
+
+          def supported_dcmi?(key_array = [], hash = {})
+            key_array.all? { |s| hash.key? s }
+          end
+
+          # Transforms a geocode into a Geo Json Hash
+          # @param [String] name the displayable place name for a geocode value
+          # @param [String] coords the string including the coordinates for a geocode value
+          # @return [Hash] the hash including the geocode value formatted in GEO Json
+          def coords_to_geojson(name, coords, geometry_crs = nil, uri = nil)
+            geojson_hash = { type: 'Feature', geometry: {}, properties: {} }
+
+            if coords.scan(/[\s]/).length == 3
+              # bbox
+              coords_array = coords.split(' ').map(&:to_f)
+              geojson_hash[:bbox] = coords_array
+              geojson_hash[:geometry][:type] = 'Polygon'
+              geojson_hash[:geometry][:coordinates] = [[[coords_array[0], coords_array[1]],
+                                                        [coords_array[2], coords_array[1]],
+                                                        [coords_array[2], coords_array[3]],
+                                                        [coords_array[0], coords_array[3]],
+                                                        [coords_array[0], coords_array[1]]]]
+            elsif coords.match(/^[-]?[\d]*[\.]?[\d]*[ ,][-]?[\d]*[\.]?[\d]*$/)
+              # point
+              geojson_hash[:geometry][:type] = 'Point'
+
+              coords_array = if coords.match(/,/)
+                               coords.split(',').reverse
+                             else
+                               coords.split(' ')
+                             end
+
+              geojson_hash[:geometry][:coordinates] = coords_array.map(&:to_f)
+            else
+              Rails.logger.error("This coordinate format is not yet supported: '#{coords}'")
+            end
+
+            geojson_hash[:properties] = {}
+            geojson_hash[:properties][:placename] = name if name.present?
+            geojson_hash[:properties][:geometryCRS] = geometry_crs unless geometry_crs.nil?
+            geojson_hash[:properties][:uri] = uri unless uri.blank?
+            
+            # Return as a JSON String for blacklight-maps
+            geojson_hash.to_json.to_s
+          end
 
         private
 

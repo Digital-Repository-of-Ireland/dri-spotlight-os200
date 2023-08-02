@@ -58,8 +58,14 @@ Spotlight::Engine.config.uploader_storage_path = 'os200/uploads'
 # Spotlight::Engine.config.ga_page_analytics_options = config.ga_analytics_options.merge(limit: 5)
 
 # ==> Sir Trevor Widget Configuration
-# Spotlight::Engine.config.sir_trevor_widgets = %w(
+#Spotlight::Engine.config.sir_trevor_widgets = %w(
 #   Heading Text List Quote Iframe Video Oembed Rule UploadedItems Browse
 #   FeaturedPages SolrDocuments SolrDocumentsCarousel SolrDocumentsEmbed
-#   SolrDocumentsFeatures SolrDocumentsGrid SearchResults
+#   SolrDocumentsFeatures SolrDocumentsGrid SolrDocumentsMap SearchResults
 # )
+
+Spotlight::Engine.config.sir_trevor_widgets = %w(
+   Heading Text List Quote Iframe Video Oembed Rule UploadedItems Browse BrowseGroupCategories LinkToSearch
+   FeaturedPages SolrDocuments SolrDocumentsCarousel SolrDocumentsEmbed
+   SolrDocumentsFeatures SolrDocumentsGrid SearchResults SearchResultsMap
+)

@@ -55,9 +55,8 @@
     
     <!-- string (_s...) -->
 <!--
-    <dynamicField name="*_si" type="string" stored="false" indexed="true" multiValued="false"/>
+<dynamicField name="*_si" type="string" stored="false" indexed="true" multiValued="false"/> -->
     <dynamicField name="*_sim" type="string" stored="false" indexed="true" multiValued="true"/>
--->
     <dynamicField name="*_ss" type="string" stored="true" indexed="false" multiValued="false"/>
     <dynamicField name="*_ssm" type="string" stored="true" indexed="false" multiValued="true"/>
     <dynamicField name="*_ssi" type="string" stored="true" indexed="true" multiValued="false"/>
@@ -192,7 +191,8 @@
 
     <!-- you must define copyField source and dest fields explicity or schemaBrowser doesn't work -->
     <field name="all_text_timv" type="text" stored="false" indexed="true" multiValued="true" termVectors="true" termPositions="true" termOffsets="true"/>
-
+    <!-- geospatial stores any dcterms:Point or dcterms:Box values from the metadata -->
+    <field name="geospatial" type="location_rpt" stored="true" indexed="true" multiValued="true" />
 
   </fields>
 
