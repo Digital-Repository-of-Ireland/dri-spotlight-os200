@@ -19,9 +19,9 @@
 // Twitter Typeahead for autocomplete
 //= require twitter/typeahead
 //= require bootstrap
-//= require blacklight/blacklight
 // Required by BlacklightMaps
 //= require blacklight-maps
+//= require blacklight/blacklight
 //= require blacklight_gallery
 //= require openseadragon
 //= require spotlight

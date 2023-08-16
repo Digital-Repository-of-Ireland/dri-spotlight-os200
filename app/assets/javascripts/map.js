@@ -80,6 +80,42 @@
         style: pointStyle 
     });
 
+    var clusterSource = new ol.source.Cluster({
+        distance: 35,
+        source: geojsonSource
+      });
+    var styleCache = {};
+    var clusters = new ol.layer.Vector({
+        title: 'Points',
+        visible: true,
+        source: clusterSource,
+        style: function(feature) {
+          var size = feature.get('features').length;
+          var style = styleCache[size];
+          if (!style) {
+            style = new ol.style.Style({
+              image: new ol.style.Circle({
+                radius: 10,
+                stroke: new ol.style.Stroke({
+                  color: '#fff'
+                }),
+                fill: new ol.style.Fill({
+                  color: '#3399CC'
+                })
+              }),
+              text: new ol.style.Text({
+                text: size.toString(),
+                fill: new ol.style.Fill({
+                  color: '#fff'
+                })
+              })
+            });
+            styleCache[size] = style;
+          }
+          return style;
+        },
+    });
+
     map = new ol.Map({
            layers: [
     	       new ol.layer.Group({
@@ -108,7 +144,7 @@
                    opacity: 0.3,
     	             source: tileSource,
     	           }),
-                 geojsonLayer
+                 clusters
     	         ]
              })
            ],
@@ -149,20 +185,38 @@
     });
     map.addOverlay(overlay);
 
-    map.on('click', function(evt){
-        var feature = map.forEachFeatureAtPixel(evt.pixel,
-          function(feature, layer) {
-            return feature;
-          });
-        if (feature) {
-            var geometry = feature.getGeometry();
-            var coord = geometry.getCoordinates();
-            
-            var content = feature.get('placename');
-            
-            content_element.innerHTML = content;
-            overlay.setPosition(coord);
+    map.on('click', (event) => {
+      clusters.getFeatures(event.pixel).then((features) => {
+        if (features.length > 0) {
+          const clusterMembers = features[0].get('features');
+          if (clusterMembers.length > 1) {
+            // Calculate the extent of the cluster members.
+            const extent = ol.extent.createEmpty();
+            clusterMembers.forEach((feature) =>
+              ol.extent.extend(extent, feature.getGeometry().getExtent())
+            );
+            const view = map.getView();
+            const resolution = map.getView().getResolution();
+            if (
+              view.getZoom() === view.getMaxZoom() ||
+              (ol.extent.getWidth(extent) < resolution && ol.extent.getHeight(extent) < resolution)
+            ) {
+              // Show an expanded view of the cluster members.
+              clickFeature = features[0];
+              clickResolution = resolution;
+              clusterCircles.setStyle(clusterCircleStyle);
+            } else {
+              // Zoom to the extent of the cluster members.
+              view.fit(extent, {duration: 500, padding: [50, 50, 50, 50]});
+            }
+          } else {
+          var coord = map.getCoordinateFromPixel(event.pixel);
+          var content = features[0].get('features')[0].get('popup');
+          content_element.innerHTML = content;
+          overlay.setPosition(coord);
+          }
         }
+      })
     });
   };
 }( jQuery ));

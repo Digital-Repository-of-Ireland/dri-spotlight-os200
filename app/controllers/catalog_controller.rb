@@ -4,16 +4,9 @@ class CatalogController < ApplicationController
   include Blacklight::Catalog
   include BlacklightMaps::Controller
   
+  before_action :access_token, only: [:index, :show]
+
   configure_blacklight do |config|
-    config.show.oembed_field = :oembed_url_ssm
-    config.show.partials.insert(1, :oembed)
-
-    config.view.gallery(document_component: Blacklight::Gallery::DocumentComponent)
-    config.view.masonry(document_component: Blacklight::Gallery::DocumentComponent)
-
-    config.view.gallery.partials = [:index_header, :index]
-    config.view.masonry.partials = [:index]
-    
     config.add_results_collection_tool(:sort_widget)
     config.add_results_collection_tool(:per_page_widget)
     config.add_results_collection_tool(:view_type_group)
@@ -33,7 +26,7 @@ class CatalogController < ApplicationController
     config.document_unique_id_param = 'ids'
 
     # solr field configuration for search results/index views
-    config.view.index.thumbnail_field = 'thumbnail_url_ssm'
+    #config.view.index.thumbnail_field = 'thumbnail_url_ssm'
     config.view.list.thumbnail_field = 'thumbnail_square_url_ssm'
 
     config.index.title_field = 'full_title_tesim'
@@ -50,6 +43,7 @@ class CatalogController < ApplicationController
     config.add_facet_field 'readonly_parish_ssim', label: 'Parish', limit: true
     config.add_facet_field 'readonly_year_ssim', label: 'Year', limit: true
     config.add_facet_field 'geojson_ssim', limit: -2, label: 'Coordinates', show: false
+    config.add_facet_field 'placename_sim', limit: -2, label: 'Placename', show: false
     config.add_facet_fields_to_solr_request!
 
     config.add_field_configuration_to_solr_request!
@@ -63,26 +57,14 @@ class CatalogController < ApplicationController
     config.view.maps.facet_mode = 'geojson'
     config.view.maps.placename_field = 'placename_sim'
     config.view.maps.geojson_field = 'geojson_ssim'
-    config.view.maps.search_mode = 'coordinates'
+    config.view.maps.search_mode = 'placename'
     config.view.maps.spatial_query_dist = 0.5
-
 
     # Set which views by default only have the title displayed, e.g.,
     # config.view.gallery.title_only_by_default = true
   end
 
-  # get a single document from the index
-  # to add responses for formats other than html or json see _Blacklight::Document::Export_
-  def show
-    deprecated_response, @document = search_service.fetch(params[:id])
-    @response = ActiveSupport::Deprecation::DeprecatedObjectProxy.new(deprecated_response, 'The @response instance variable is deprecated; use @document.response instead.')
-    
-    @access_token = ArcGisTokenGenerator.new.token
-    
-    respond_to do |format|
-      format.html { @search_context = setup_next_and_previous_documents }
-      format.json
-      additional_export_formats(@document, format)
-    end
+  def access_token
+   @access_token ||= ArcGisTokenGenerator.new.token
   end
 end
