@@ -7,7 +7,6 @@ class SolrDocument
 
   include Spotlight::SolrDocument::AtomicUpdates
 
-  FEATURE_COLLECTION_PREFIX = '"type": "FeatureCollection",'
   # self.unique_key = 'id'
 
   # Email uses the semantic field mappings below to generate the body of an email.
@@ -22,12 +21,4 @@ class SolrDocument
   # and Blacklight::Document::SemanticFields#to_semantic_values
   # Recommendation: Use field names from Dublin Core
   use_extension(Blacklight::Document::DublinCore)
-
-  def feature_collection
-    "{ #{FEATURE_COLLECTION_PREFIX} \"features\": [ #{features} ] }"
-  end
-
-  def features
-    self[:geojson_ssim].join(',')
-  end
 end

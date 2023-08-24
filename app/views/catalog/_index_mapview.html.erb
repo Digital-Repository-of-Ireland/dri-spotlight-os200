@@ -1,20 +1,14 @@
 <% content_for :head do %>
     <%= stylesheet_link_tag 'openlayers/theme/default/style' %>
     <%= stylesheet_link_tag 'ol-layerswitcher/ol-layerswitcher' %>
-    <style>
-      .map {
-        width: 100%;
-        height: 500px;
-      }
-    </style>
 <% end %>
-<div class="content-block">
 
-<%= content_tag(:div, id: 'map', class: 'map', data: { townland_source: Mapping.geoserver, townland_layer: Mapping.geoserver_layer }) do %>
+<%= content_tag(:div, id: 'blacklight-index-map', data: { townland_source: Mapping.geoserver, townland_layer: Mapping.geoserver_layer }) do %>
   <div id="popup" class="ol-popup">
     <a href="#" id="popup-closer" class="ol-popup-closer"></a>
     <div id="popup-content"></div>
   </div>
 <% end %>
 
-<%= javascript_tag "$('#map').dri_openlayers_map(#{geojson_features}, \"#{@access_token}\");" %>
+<script src="https://cdn.jsdelivr.net/npm/monotone-chain-convex-hull@1.0.0/lib/index.js"></script>
+<%= javascript_tag "$('#blacklight-index-map').dri_openlayers_map(#{geojson_features}, \"#{@access_token}\", { id: 'blacklight-index-map'});" %>

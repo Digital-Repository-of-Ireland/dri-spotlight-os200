@@ -12,6 +12,21 @@
     const parser = new ol.format.WMTSCapabilities();
     let map;
    
+    var mapped_items = '<span class="mapped-count"><span class="badge badge-secondary">' + geojson_docs.features.length + '</span>' + ' location' + (geojson_docs.features.length !== 1 ? 's' : '') + ' mapped</span>';
+    var mapped_caveat = '<span class="mapped-caveat">Only items with location data are shown below</span>';
+
+    var sortAndPerPage = $('#sortAndPerPage');
+
+    // Update page links with number of mapped items, disable sort, per_page, pagination
+    if (sortAndPerPage.length) { // catalog#index and #map view
+      var page_links = sortAndPerPage.find('.page-links');
+      var result_count = page_links.find('.page-entries').find('strong').last().html();
+      page_links.html('<span class="page-entries"><strong>' + result_count + '</strong> items found</span>' + mapped_items + mapped_caveat);
+      sortAndPerPage.find('.dropdown-toggle').hide();
+    } else { // catalog#show view
+        $(this).before(mapped_items);
+    }
+
     function getServiceJson(){
       const serviceRequest = new XMLHttpRequest();
       serviceRequest.open("GET", 'https://tiles-eu1.arcgis.com/FH5XCsx8rYXqnjF5/arcgis/rest/services/MapGeniePremiumITM/MapServer?f=json&token=' + token, false);
@@ -57,65 +72,188 @@
       });
 
     const tileSource = new ol.source.TileWMS({
-          url: $('#map').data('townland-source'),
-          params: {'LAYERS': $('#map').data('townland-layer'), 'TILED': true},
+          url: $("#" + arg_opts.id).data('townland-source'),
+          params: {'LAYERS': $("#" + arg_opts.id).data('townland-layer'), 'TILED': true},
           serverType: 'geoserver'
     })
 
-    let pointStyle = new ol.style.Style({
-                       image: new ol.style.Circle({
-                       radius: 5,
-                       fill: new ol.style.Fill({
-                         color: [255, 255, 255, 0.3]
-                       }),
-                       stroke: new ol.style.Stroke({color: '#cb1d1d', width: 2})
-                       })
-    })
+    const circleDistanceMultiplier = 1;
+    const circleFootSeparation = 28;
+    const circleStartAngle = Math.PI / 2;
+
+    const convexHullFill = new ol.style.Fill({
+      color: 'rgba(255, 153, 0, 0.4)',
+    });
+    const convexHullStroke = new ol.style.Stroke({
+      color: 'rgba(204, 85, 0, 1)',
+      width: 1.5,
+    });
+    const outerCircleFill = new ol.style.Fill({
+      color: 'rgba(255, 153, 102, 0.3)',
+    });
+    const innerCircleFill = new ol.style.Fill({
+      color: 'rgba(255, 165, 0, 0.7)',
+    });
+    const textFill = new ol.style.Fill({
+      color: '#fff',
+    });
+    const textStroke = new ol.style.Stroke({
+      color: 'rgba(0, 0, 0, 0.6)',
+      width: 3,
+    });
+    const innerCircle = new ol.style.Circle({
+      radius: 14,
+      fill: innerCircleFill,
+    });
+    const outerCircle = new ol.style.Circle({
+      radius: 20,
+      fill: outerCircleFill,
+    });
+
+    let clickFeature, clickResolution;
+
+    /**
+     * Style for clusters with features that are too close to each other, activated on click.
+     * @param {Feature} cluster A cluster with overlapping members.
+     * @param {number} resolution The current view resolution.
+     * @return {Style|null} A style to render an expanded view of the cluster members.
+     */
+    function clusterCircleStyle(cluster, resolution) {
+      if (cluster !== clickFeature || resolution !== clickResolution) {
+        return null;
+      }
+      const clusterMembers = cluster.get('features');
+      const centerCoordinates = cluster.getGeometry().getCoordinates();
+      return generatePointsCircle(
+        clusterMembers.length,
+        cluster.getGeometry().getCoordinates(),
+        resolution
+      ).reduce((styles, coordinates, i) => {
+        const point = new ol.geom.Point(coordinates);
+        const line = new ol.geom.LineString([centerCoordinates, coordinates]);
+        styles.unshift(
+          new ol.style.Style({
+            geometry: line,
+            stroke: convexHullStroke,
+          })
+        );
+        styles.push(
+          clusterMemberStyle(
+            new ol.feature.Feature({
+              ...clusterMembers[i].getProperties(),
+              geometry: point,
+            })
+          )
+        );
+        return styles;
+      }, []);
+    }
+
+    /**
+     * From
+     * https://github.com/Leaflet/Leaflet.markercluster/blob/31360f2/src/MarkerCluster.Spiderfier.js#L55-L72
+     * Arranges points in a circle around the cluster center, with a line pointing from the center to
+     * each point.
+     * @param {number} count Number of cluster members.
+     * @param {Array<number>} clusterCenter Center coordinate of the cluster.
+     * @param {number} resolution Current view resolution.
+     * @return {Array<Array<number>>} An array of coordinates representing the cluster members.
+     */
+    function generatePointsCircle(count, clusterCenter, resolution) {
+      const circumference =
+        circleDistanceMultiplier * circleFootSeparation * (2 + count);
+      let legLength = circumference / (Math.PI * 2); //radius from circumference
+      const angleStep = (Math.PI * 2) / count;
+      const res = [];
+      let angle;
+
+      legLength = Math.max(legLength, 35) * resolution; // Minimum distance to get outside the cluster icon.
+
+      for (let i = 0; i < count; ++i) {
+        // Clockwise, like spiral.
+        angle = circleStartAngle + i * angleStep;
+        res.push([
+          clusterCenter[0] + legLength * Math.cos(angle),
+          clusterCenter[1] + legLength * Math.sin(angle),
+        ]);
+      }
+
+      return res;
+    }
+
+    let hoverFeature;
+    /**
+     * Style for convex hulls of clusters, activated on hover.
+     * @param {Feature} cluster The cluster feature.
+     * @return {Style|null} Polygon style for the convex hull of the cluster.
+     */
+    function clusterHullStyle(cluster) {
+      if (cluster !== hoverFeature) {
+        return null;
+      }
+      const originalFeatures = cluster.get('features');
+      const points = originalFeatures.map((feature) =>
+        feature.getGeometry().getCoordinates()
+      );
+      console.log(points);
+      return new ol.Style({
+        geometry: new ol.geom.Polygon([monotoneChainConvexHull(points)]),
+        fill: convexHullFill,
+        stroke: convexHullStroke,
+      });
+    }
+
+    function clusterStyle(feature) {
+      const size = feature.get('features').length;
+      return [
+        new ol.style.Style({
+          image: outerCircle,
+        }),
+        new ol.style.Style({
+          image: innerCircle,
+          text: new ol.style.Text({
+            text: size.toString(),
+            fill: textFill,
+            stroke: textStroke,
+          }),
+        }),
+      ];
+    }
+
+    // Layer displaying the convex hull of the hovered cluster.
+    const clusterHulls = new ol.layer.Vector({
+      source: clusterSource,
+      style: clusterHullStyle,
+    });
+
+    // Layer displaying the expanded view of overlapping cluster members.
+    const clusterCircles = new ol.layer.Vector({
+      source: clusterSource,
+      style: clusterCircleStyle,
+    });
 
     const geojsonSource = new ol.source.Vector();
     const geojsonLayer = new ol.layer.Vector({
         title: 'Points',
         visible: true,
         source: geojsonSource,
-        style: pointStyle 
     });
 
     var clusterSource = new ol.source.Cluster({
         distance: 35,
         source: geojsonSource
       });
+
     var styleCache = {};
     var clusters = new ol.layer.Vector({
         title: 'Points',
         visible: true,
         source: clusterSource,
-        style: function(feature) {
-          var size = feature.get('features').length;
-          var style = styleCache[size];
-          if (!style) {
-            style = new ol.style.Style({
-              image: new ol.style.Circle({
-                radius: 10,
-                stroke: new ol.style.Stroke({
-                  color: '#fff'
-                }),
-                fill: new ol.style.Fill({
-                  color: '#3399CC'
-                })
-              }),
-              text: new ol.style.Text({
-                text: size.toString(),
-                fill: new ol.style.Fill({
-                  color: '#fff'
-                })
-              })
-            });
-            styleCache[size] = style;
-          }
-          return style;
-        },
+        style: clusterStyle
     });
-
+    
+    $('.ol-viewport').not(':last').remove();
+    $('.ol-viewport').hide();
     map = new ol.Map({
            layers: [
     	       new ol.layer.Group({
@@ -147,8 +285,9 @@
                  clusters
     	         ]
              })
+             , clusterHulls, clusterCircles
            ],
-          target: 'map',
+          target: arg_opts.id,
           view: new ol.View({
             center: ol.proj.fromLonLat([-7.5,53.4]),
             zoom: 7,
@@ -185,6 +324,21 @@
     });
     map.addOverlay(overlay);
 
+    map.on('pointermove', (event) => {
+      clusters.getFeatures(event.pixel).then((features) => {
+        if (features[0] !== hoverFeature) {
+          // Display the convex hull on hover.
+          hoverFeature = features[0];
+          clusterHulls.setStyle(clusterHullStyle);
+          // Change the cursor style to indicate that the cluster is clickable.
+          map.getTargetElement().style.cursor =
+            hoverFeature && hoverFeature.get('features').length > 1
+              ? 'pointer'
+              : '';
+        }
+      });
+    });
+
     map.on('click', (event) => {
       clusters.getFeatures(event.pixel).then((features) => {
         if (features.length > 0) {
@@ -210,10 +364,10 @@
               view.fit(extent, {duration: 500, padding: [50, 50, 50, 50]});
             }
           } else {
-          var coord = map.getCoordinateFromPixel(event.pixel);
-          var content = features[0].get('features')[0].get('popup');
-          content_element.innerHTML = content;
-          overlay.setPosition(coord);
+            var coord = map.getCoordinateFromPixel(event.pixel);
+            var content = features[0].get('features')[0].get('popup');
+            content_element.innerHTML = content;
+            overlay.setPosition(coord);
           }
         }
       })
