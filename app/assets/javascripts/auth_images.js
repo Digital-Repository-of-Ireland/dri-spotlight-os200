@@ -22,7 +22,7 @@ async function displayProtectedImage(
   image.onload = () => URL.revokeObjectURL(objectUrl);
 }
 
-$(document).ready(function(){
+$(document).on('turbolinks:load', function() { 
   const authToken = Cookies.get('repo_auth');
   $("img[src^='https://repository.dri.ie/loris']").each(function(){
     displayProtectedImage(this, authToken);
