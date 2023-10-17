@@ -252,6 +252,13 @@
         style: clusterStyle
     });
     
+    geojsonSource.addFeatures(
+          new ol.format.GeoJSON().readFeatures(geojson_docs, {
+            dataProjection: 'EPSG:4326',
+            featureProjection: 'EPSG:3857'
+          })
+        );
+
     $('.ol-viewport').not(':last').remove();
     $('.ol-viewport').hide();
     map = new ol.Map({
@@ -291,16 +298,10 @@
           view: new ol.View({
             center: ol.proj.fromLonLat([-7.5,53.4]),
             zoom: 7,
-            projection: 'EPSG:3857'
+            projection: 'EPSG:3857',
           }),
     });
-
-    geojsonSource.addFeatures(
-          new ol.format.GeoJSON().readFeatures(geojson_docs, {
-            dataProjection: 'EPSG:4326',
-            featureProjection: map.getView().getProjection()
-          })
-        );
+    map.getView().fit(geojsonSource.getExtent(), { padding: [50, 50, 50, 50] }); 
 
     var layerSwitcher = new LayerSwitcher({
       groupSelectStyle: 'children' // Can be 'children' [default], 'group' or 'none'
