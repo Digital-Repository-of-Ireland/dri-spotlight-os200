@@ -313,7 +313,7 @@ module Spotlight
 
         def townland
           t = region('townland')
-          return if t.empty?
+          return if t.blank?
 
           dcmi_name(t)
         end
