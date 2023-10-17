@@ -36,7 +36,7 @@ class CatalogController < ApplicationController
     config.add_sort_field 'relevance', sort: 'score desc', label: 'Relevance'
 
     config.add_facet_field 'readonly_collection_ssim', label: 'Collection'
-    config.add_facet_field 'readonly_author_ssim', label: 'Author', limit: true
+    config.add_facet_field 'readonly_creator_ssim', label: 'Creator', limit: true
     config.add_facet_field 'readonly_barony_ssim', label: 'Barony', limit: true
     config.add_facet_field 'readonly_county_ssim', label: 'County', limit: true
     config.add_facet_field 'readonly_townland_ssim', label: 'Townland', limit: true
