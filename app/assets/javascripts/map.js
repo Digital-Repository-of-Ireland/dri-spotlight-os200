@@ -301,7 +301,10 @@
             projection: 'EPSG:3857',
           }),
     });
-    map.getView().fit(geojsonSource.getExtent(), { padding: [50, 50, 50, 50] }); 
+
+    if (Array.isArray(geojsonSource.getFeatures()) && geojsonSource.getFeatures().length > 0) {
+      map.getView().fit(geojsonSource.getExtent(), { padding: [50, 50, 50, 50] }); 
+    }
 
     var layerSwitcher = new LayerSwitcher({
       groupSelectStyle: 'children' // Can be 'children' [default], 'group' or 'none'
