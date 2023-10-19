@@ -13,5 +13,6 @@ test:
 
 production:
   <<: *common
+  token_url: "https://www.arcgis.com/sharing"
   geoserver: "https://dri.ie/geoserver/wms"
   geoserver_layer: "os200:townlands"
