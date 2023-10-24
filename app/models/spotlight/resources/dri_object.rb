@@ -285,6 +285,10 @@ module Spotlight
             'OS Letters'
           when 'ordnance survey first edition 6-inch map sheet information'
             'OS Maps'
+          when 'ordnance survey name book transcriptions'
+            'OS Name Books'
+          when 'Ordnance Survey Memoir Drawings'
+            'OS Drawings'
           end
         end
 
