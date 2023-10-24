@@ -287,7 +287,7 @@ module Spotlight
             'OS Maps'
           when 'ordnance survey name book transcriptions'
             'OS Name Books'
-          when 'Ordnance Survey Memoir Drawings'
+          when 'ordnance survey memoir drawings'
             'OS Drawings'
           end
         end
