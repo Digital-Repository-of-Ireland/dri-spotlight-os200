@@ -1,17 +1,12 @@
-function fetchWithAuthentication(url, authToken) {
-  const headers = new Headers();
-  headers.set('Authorization', `Basic ${authToken}`);
+function fetchWithAuthentication(url) {
+  const headers = getAuthzHeader();
   return fetch(url, { headers });
 }
 
-async function displayProtectedImage(
-  image, authToken
-) {
+async function displayProtectedImage(image) {
   const url = $(image).attr('src');
   // Fetch the image.
-  const response = await fetchWithAuthentication(
-    url, authToken
-  );
+  const response = await fetchWithAuthentication(url);
 
   // Create an object URL from the data.
   const blob = await response.blob();
@@ -23,8 +18,8 @@ async function displayProtectedImage(
 }
 
 $(document).on('turbolinks:load', function() { 
-  const authToken = Cookies.get('repo_auth');
   $("img[src^='https://repository.dri.ie/loris']").each(function(){
-    displayProtectedImage(this, authToken);
+    displayProtectedImage(this);
   });
 });
+

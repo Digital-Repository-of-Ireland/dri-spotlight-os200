@@ -24,6 +24,7 @@
 //= require blacklight/blacklight
 //= require blacklight_gallery
 //= require openseadragon
+//= require iiif_auth
 //= require spotlight
 //= require openlayers/ol
 //= require ol-layerswitcher/ol-layerswitcher
@@ -31,3 +32,5 @@
 //= require js.cookie
 //= require auth_images
 //= require map
+//
+

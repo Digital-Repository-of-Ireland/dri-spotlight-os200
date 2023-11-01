@@ -34,6 +34,7 @@ module Spotlight
 
         add_image_urls if metadata['type'] != ['Collection']
         add_thumbnail
+        add_iiif_manifest
 
         solr_hash
       end
@@ -90,6 +91,10 @@ module Spotlight
           solr_hash[thumbnail_list_field] = "#{iiif_manifest_base}/#{id}:#{file_id}/square/100,100/0/default.jpg"
           break
         end
+      end
+
+      def add_iiif_manifest
+        solr_hash['iiif_manifest_url_ssi'] = "#{repository_iiif_base}/#{id}/manifest.json"
       end
 
       def add_geographical_coverage
@@ -205,8 +210,8 @@ module Spotlight
         Spotlight::Resources::Dri::Engine.config.iiif_manifest_base
       end
 
-      def repository_base
-        DriSpotlight::Application.config.repository_base
+      def repository_iiif_base
+        Rails.configuration.repository_iiif_base
       end
 
       def image_urls
