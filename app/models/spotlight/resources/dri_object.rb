@@ -488,7 +488,7 @@ module Spotlight
               add_parish(field, hash)
               next
             when 'townland'
-              add_townload(field, hash)
+              add_townland(field, hash)
               next
             when 'doi'
               add_doi(field, hash)
@@ -505,7 +505,7 @@ module Spotlight
         end
 
         def desc_metadata_fields
-          %w(description doi creator author year subject barony county townload parish collection geographical_coverage temporal_coverage type attribution rights license)
+          %w(description doi creator author year subject barony county townland parish collection geographical_coverage temporal_coverage type attribution rights license)
         end
 
         def add_attribution(field, hash)
