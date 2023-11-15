@@ -193,7 +193,11 @@
     <field name="all_text_timv" type="text" stored="false" indexed="true" multiValued="true" termVectors="true" termPositions="true" termOffsets="true"/>
     <!-- geospatial stores any dcterms:Point or dcterms:Box values from the metadata -->
     <field name="geospatial" type="location_rpt" stored="true" indexed="true" multiValued="true" />
-
+  
+    <!-- <dynamicField name="*_drs" type="date_range" stored="true" indexed="false" multiValued="false"/>
+    <dynamicField name="*_drsm" type="date_range" stored="true" indexed="false" multiValued="true"/>
+    <dynamicField name="*_drsi" type="date_range" stored="true" indexed="true" multiValued="false"/> -->
+    <dynamicField name="*_drsim" type="date_range" stored="true" indexed="true" multiValued="true"/>
   </fields>
 
 
@@ -229,7 +233,7 @@
     <fieldType name="date" class="solr.TrieDateField" precisionStep="0" positionIncrementGap="0"/>
     <!-- A Trie based date field for faster date range queries and date faceting. -->
     <fieldType name="tdate" class="solr.TrieDateField" precisionStep="6" positionIncrementGap="0"/>
-    
+    <fieldType name="date_range" class="solr.DateRangeField"/>
     
     <!-- This point type indexes the coordinates as separate fields (subFields)
       If subFieldType is defined, it references a type, and a dynamic field

@@ -26,6 +26,8 @@ gem 'js_cookie_rails'
 gem 'net-smtp'
 gem 'rest-client'
 
+gem "blacklight_range_limit"
+
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
 gem 'webpacker', '~> 5.0'
 # Use CoffeeScript for .coffee assets and views

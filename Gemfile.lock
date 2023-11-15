@@ -145,6 +145,10 @@ GEM
       thor
       tophat
       underscore-rails (~> 1.6)
+    blacklight_range_limit (8.4.0)
+      blacklight (>= 7.25.2, < 9)
+      deprecation
+      view_component (>= 2.54, < 4)
     bootstrap (4.6.1)
       autoprefixer-rails (>= 9.1.0)
       popper_js (>= 1.14.3, < 2)
@@ -538,6 +542,7 @@ DEPENDENCIES
   blacklight-maps
   blacklight-oembed (~> 1.0)
   blacklight-spotlight (= 3.5.0.2)
+  blacklight_range_limit
   bootstrap (~> 4.0)
   byebug
   capybara (~> 2.13)

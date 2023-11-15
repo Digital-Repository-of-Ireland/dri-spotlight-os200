@@ -19,7 +19,9 @@ module Spotlight
         add_label
         add_creator
         add_author
-        add_year
+        #add_year
+        add_date_range('creation_date')
+        add_date_range('date')
 
         if metadata.key?('subject') && metadata['subject'].present?
           add_subject_facet
@@ -152,12 +154,38 @@ module Spotlight
       end
 
       def add_image_urls
-          solr_hash[tile_source_field] = image_urls
+        solr_hash[tile_source_field] = image_urls
       end
 
       def add_label
         return unless title_field && metadata.key?('title')
         solr_hash[title_field] = metadata['title']
+      end
+
+      def add_date_range(date_type)
+        return unless metadata.key?(date_type) && metadata[date_type].present?
+
+        date = metadata[date_type].first
+        parsed_date = dri_object.parse_dcmi_date(date)
+
+        range_start = parsed_date[:start] if parsed_date.key?(:start)
+        range_end = parsed_date[:end] if parsed_date.key?(:end)
+ 
+        solr_hash["date_drsim"] = if range_start && range_end
+                                    "[#{range_start} TO #{range_end}]"
+                                  elsif range_start
+                                    range_start
+                                  elsif range_end
+                                    range_end
+                                  end
+
+        if parsed_date.key?(:name)
+          if solr_hash.key?('dates_ssim')
+            solr_hash['dates_ssim'] << parsed_date[:name]
+          else
+            solr_hash['dates_ssim'] = parsed_date[:name]
+          end
+        end
       end
 
       def add_year
@@ -335,16 +363,28 @@ module Spotlight
           r
         end
 
+        def parse_dcmi_date(date)
+          results = {}
+          return results[:name] = date if !date.include?('name')
+
+          date.split(/\s*;\s*/).each do |component|
+            (k,v) = component.split(/\s*=\s*/)
+            if k == "name"
+              results[:name] = v
+            else
+              results[k.to_sym] = Date.parse(v).year
+            end
+          end
+
+          results
+        end
+
         def year
           return unless metadata.key?('creation_date') && metadata['creation_date'].present?
           cdate = metadata['creation_date'].first
 
           start = if cdate.include?('name=')
-                    results = {}
-                    cdate.split(/\s*;\s*/).each do |component|
-                      (k,v) = component.split(/\s*=\s*/)
-                      results[k.to_sym] = v if v.present?
-                    end
+                    results = parse_dcmi_date(cdate)
                     results[:start] || results[:end] || results[:name]
                   else
                     cdate
