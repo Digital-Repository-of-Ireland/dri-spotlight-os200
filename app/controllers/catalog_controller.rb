@@ -44,19 +44,19 @@ class CatalogController < ApplicationController
     config.add_facet_field 'readonly_county_ssim', label: 'County', limit: true
     config.add_facet_field 'readonly_townland_ssim', label: 'Townland', limit: true
     config.add_facet_field 'readonly_parish_ssim', label: 'Parish', limit: true
-    config.add_facet_field 'readonly_year_ssim', label: 'Year', limit: true
+    #config.add_facet_field 'readonly_year_ssim', label: 'Year', limit: true
     config.add_facet_field 'dates_ssim', label: 'Dates', limit: true
     config.add_facet_field 'geojson_ssim', limit: -2, label: 'Coordinates', show: false
     config.add_facet_field 'placename_sim', limit: -2, label: 'Placename', show: false
     config.add_facet_field 'date_drsim', label: 'Year',
                        range: {
-                         num_segments: 10,
+                         num_segments: 30,
                          assumed_boundaries: [1830, 1850],
                          segments: false,
                          maxlength: 4,
                          date: true,
                          min: 1830,
-                         max: 1850
+                         max: 1867
                        }, presenter: DateFacetFieldPresenter
     config.add_facet_fields_to_solr_request!
 
