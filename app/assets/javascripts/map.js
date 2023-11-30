@@ -71,6 +71,14 @@
         tileGrid: tileGrid,
       });
 
+    const historicBWBasemapSource = new ol.source.XYZ({
+        url:
+          'https://tiles-eu1.arcgis.com/FH5XCsx8rYXqnjF5/arcgis/rest/services/MapGenie6InchFirstEditionBlackWhiteITM/MapServer/tile/{z}/{y}/{x}' +
+          '?token=' + token,
+        projection: irishProjection,
+        tileGrid: tileGrid,
+      });
+
     const tileSource = new ol.source.TileWMS({
           url: $("#" + arg_opts.id).data('townland-source'),
           params: {'LAYERS': $("#" + arg_opts.id).data('townland-layer'), 'TILED': true},
@@ -267,10 +275,16 @@
                title: 'Base maps',
                layers: [
                  new ol.layer.Tile({
-                   title: 'Historic',
+                   title: 'Historic Colour',
                    type: 'base',
                    visible: false,
                    source: historicBasemapSource
+                 }),
+                 new ol.layer.Tile({
+                   title: 'Historic B&W',
+                   type: 'base',
+                   visible: false,
+                   source: historicBWBasemapSource
                  }),
                  new ol.layer.Tile({
                    title: 'OSi',
