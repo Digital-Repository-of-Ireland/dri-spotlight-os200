@@ -1,3 +1,5 @@
+require 'uri'
+
 # frozen_string_literal: true
 class SolrDocument
   include Blacklight::Solr::Document
@@ -21,4 +23,11 @@ class SolrDocument
   # and Blacklight::Document::SemanticFields#to_semantic_values
   # Recommendation: Use field names from Dublin Core
   use_extension(Blacklight::Document::DublinCore)
+
+  def relation_to_iiif
+    return nil unless self['readonly_relation_ssim'].present?
+
+    id = URI(self['readonly_relation_ssim'].first).path.split('/').last
+    "https://map-view.nls.uk/iiif/#{id[0]}/#{id[0..4]}%2F#{id}/info.json"
+  end
 end

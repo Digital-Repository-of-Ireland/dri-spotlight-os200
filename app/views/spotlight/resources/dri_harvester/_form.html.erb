@@ -9,7 +9,7 @@
     <%= f.text_field :token, help: t('.token-field.help'), label: t('.token') %>
   <% end %>
   <%= f.text_field :ids, help: t('.ids-field.help'), label: t('.ids') %>
-  <%= f.text_area :metadata, help: t('.metadata-field.help'), label: t('.metadata'), value: "title, subject, creation_date, published_date, type, rights, language, description, creator, contributor, publisher, date, format, source, temporal_coverage, geographical_coverage, geocode_point, geocode_box, institute, root_collection_id, isGovernedBy, ancestor_id, ancestor_title, role_aut" %>
+  <%= f.text_area :metadata, help: t('.metadata-field.help'), label: t('.metadata'), value: "title, subject, creation_date, published_date, type, rights, language, description, creator, contributor, publisher, date, format, source, temporal_coverage, geographical_coverage, geocode_point, geocode_box, institute, root_collection_id, isGovernedBy, ancestor_id, ancestor_title, role_aut, ext_related_items_ids_relation" %>
   <div class="form-actions">
     <div class="primary-actions">
       <%= cancel_link @resource, :back, class: 'btn btn-default' %>

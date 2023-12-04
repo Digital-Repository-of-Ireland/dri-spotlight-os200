@@ -33,6 +33,7 @@ module Spotlight
         add_geographical_coverage
         add_metadata
         add_collection_id
+        add_relation
 
         add_image_urls if metadata['type'] != ['Collection']
         add_thumbnail
@@ -196,6 +197,11 @@ module Spotlight
       def add_metadata
         solr_hash.merge!(object_metadata)
         sidecar.update(data: sidecar.data.merge(object_metadata))
+      end
+
+      def add_relation
+        return unless metadata.key?('ext_related_items_ids_relation') && metadata['ext_related_items_ids_relation'].present?
+        solr_hash['readonly_relation_ssim'] = metadata['ext_related_items_ids_relation']
       end
 
       def object_metadata
@@ -536,6 +542,10 @@ module Spotlight
             when 'year'
               add_year(field, hash)
               next
+            when 'ext_related_items_ids_relation'
+              hash['Relation'] ||= []
+              hash['Relation'] += Array(metadata[field])
+              next
             end
 
             next unless metadata[field].present?
@@ -545,7 +555,7 @@ module Spotlight
         end
 
         def desc_metadata_fields
-          %w(description doi creator author year subject barony county townland parish collection geographical_coverage temporal_coverage type attribution rights license)
+          %w(description doi creator author year subject ext_related_items_id_relation barony county townland parish collection geographical_coverage temporal_coverage type attribution rights license)
         end
 
         def add_attribution(field, hash)

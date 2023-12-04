@@ -15,6 +15,7 @@ class CatalogController < ApplicationController
     config.add_results_collection_tool(:view_type_group)
 
     config.show.partials.insert(1, :show_map)
+    config.show.partials.insert(1, :show_related)
     config.show.tile_source_field = :content_metadata_image_iiif_info_ssm
     config.show.partials.insert(1, :openseadragon)
 
