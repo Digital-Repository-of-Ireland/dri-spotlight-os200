@@ -380,7 +380,11 @@ module Spotlight
             if k == "name"
               results[:name] = v
             else
-              results[k.to_sym] = Date.parse(v).year
+              begin
+                results[k.to_sym] = Date.parse(v).year
+              rescue Date::Error
+                next
+              end
             end
           end
 
