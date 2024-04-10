@@ -328,6 +328,8 @@ module Spotlight
             'OS Name Books'
           when 'ordnance survey memoir drawings'
             'OS Drawings'
+          when 'ordnance survey memoirs'
+            'OS Memoirs'
           end
         end
 
@@ -339,7 +341,7 @@ module Spotlight
         end
 
         def author
-          return metadata['role_aut'] unless metadata.key?('role_aut') && metadata['role_aut'].present?
+          metadata['role_aut'] unless metadata.key?('role_aut') && metadata['role_aut'].present?
         end
 
         def barony
