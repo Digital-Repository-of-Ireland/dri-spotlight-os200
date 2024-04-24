@@ -18,6 +18,10 @@ $dri_palegreen: #D9F8B5;
 $dri_paleorange: #F0E8B0;
 $dri_palered: #FFD9DC;
 $dri_teal: #00948F;
+
+$os200_darkblue: #076A73;
+$os200_lightblue: #0793A8;
+
 $dri_logo_url: "dri/dri_ident.png";
 $dri_logo_small_url: 'dri/dri_ident_small.png';
 $dri_logo_tiny_url: 'dri/dri_ident_tiny.png';
@@ -26,10 +30,10 @@ $logo-image: image_url($dri_logo_tiny_url);
 $logo-width: 69px;
 $logo-height: 35px;
 
-$brand-primary: $dri_lightgrey;
+$brand-primary: $dri_darkgrey;
 
 //** Global textual link color.
-$link-color:            $dri_lightgrey;
+$link-color:            $os200_darkblue;
 //** Link hover color set via `darken()` function.
 $link-hover-color:      darken($link-color, 15%);
 //** Link hover decoration.
@@ -49,7 +53,7 @@ $btn-info-color:                 $dri_white;
 $btn-info-bg:                    $dri_green;
 $btn-info-border:                darken($dri_green, 5%);
 
-$pagination-color:                     $dri_lightgrey;
+$pagination-color:                     $dri_darkgrey;
 $pagination-bg:                        #fff;
 $pagination-border:                    #ddd;
 
@@ -64,6 +68,8 @@ $pagination-active-border:             #ddd;
 $pagination-disabled-color:            $dri_extralightgrey;
 $pagination-disabled-bg:               #fff;
 $pagination-disabled-border:           #ddd;
+
+$breadcrumb-active-color:              $dri_darkgrey;
 
 @import "bootstrap/functions";
 @import "bootstrap/variables";
