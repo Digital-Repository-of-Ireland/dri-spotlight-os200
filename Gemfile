@@ -11,7 +11,7 @@ gem 'rails', '~> 6.1'
 
 gem 'activerecord-nulldb-adapter'
 # Use sqlite3 as the database for Active Record
-gem 'sqlite3'
+gem 'sqlite3', '~> 1.4'
 gem 'pg'
 # Use Puma as the app server
 gem 'puma', '~> 4'
@@ -66,7 +66,7 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'blacklight', ' ~> 7.0'
-gem 'blacklight-spotlight', '3.5.0.2'
+gem 'blacklight-spotlight', '3.5.0.3'
 gem 'blacklight-maps'
 group :development, :test do
   gem 'solr_wrapper', '>= 0.3'
