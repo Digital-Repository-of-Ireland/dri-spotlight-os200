@@ -24,6 +24,10 @@ class SolrDocument
   # Recommendation: Use field names from Dublin Core
   use_extension(Blacklight::Document::DublinCore)
 
+  def relation?
+    self['readonly_relation_ssim'].present?
+  end
+
   def relation_to_iiif
     return nil unless self['readonly_relation_ssim'].present?
 
