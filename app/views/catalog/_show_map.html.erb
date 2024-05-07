@@ -6,7 +6,7 @@
 <% css_class = @document.relation? ? 'col-md-6' : 'col-md-12' %>
 
 <div id="blacklight-show-map-container" class='os200-show-map-container <%= "#{css_class}" %>'>
-<%= content_tag(:div, { id: 'blacklight-show-map', class: 'pt-2 pb-2' }, data: { townland_source: Mapping.geoserver, townland_layer: Mapping.geoserver_layer }) do %>
+<%= content_tag(:div, { id: 'blacklight-show-map', class: 'pt-2 pb-2', data: { townland_source: Mapping.geoserver, townland_layer: Mapping.geoserver_layer }}) do %>
   <div id="popup" class="ol-popup">
     <a href="#" id="popup-closer" class="ol-popup-closer"></a>
     <div id="popup-content"></div>
