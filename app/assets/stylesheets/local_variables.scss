@@ -73,6 +73,9 @@ $pagination-disabled-border:           #ddd;
 
 $breadcrumb-active-color:              $dri_darkgrey;
 
+$exhibit-card-bg:                      #f5f5f5;
+$exhibit-card-gutter:                  10px;
+
 @import "bootstrap/functions";
 @import "bootstrap/variables";
 @import "spotlight/variables";

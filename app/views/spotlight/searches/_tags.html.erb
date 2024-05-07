@@ -1,0 +1,13 @@
+<% if tags&.any? %>
+<div class="row">
+  <div class="col-md-12 text-center">
+    <ul class="nav nav-pills tags justify-content-center">
+      <%= nav_link t('.all'), exhibit_home_page_path, active: params[:tag].blank? %></li>
+
+      <% tags.sort_by(&:name).each do |tag| %>
+        <%= nav_link tag.name, exhibit_home_page_path(tag: tag.name), active: params[:tag] == tag.name %>
+      <% end %>
+    </ul>
+  </div>
+</div>
+<% end %>
