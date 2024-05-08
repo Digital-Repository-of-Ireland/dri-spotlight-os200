@@ -15,7 +15,7 @@ $( document ).on( "ajaxSuccess", function() {
       });
 } );
 
-$(document).ready(function (e) {
+$(document).on('turbolinks:load', function() {
     $.ajaxSetup({
         global: true,
         beforeSend: function (jqXHR, settings) {

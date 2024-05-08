@@ -24,7 +24,7 @@
       page_links.html('<span class="page-entries"><strong>' + result_count + '</strong> items found</span>' + mapped_items + mapped_caveat);
       sortAndPerPage.find('.dropdown-toggle').hide();
     } else { // catalog#show view
-        $(this).before(mapped_items);
+      $(this).before(mapped_items);
     }
 
     function getServiceJson(){
@@ -267,8 +267,6 @@
           })
         );
 
-    $('.ol-viewport').not(':last').remove();
-    $('.ol-viewport').hide();
     map = new ol.Map({
            layers: [
     	       new ol.layer.Group({
