@@ -9,7 +9,7 @@ $padding-base-vertical:     6px !default;
   height: $exhibit-card-height;
   margin: 0 -1 * $exhibit-card-gutter $exhibit-card-gutter $exhibit-card-gutter;
   //               image width        +       gutter         + border (x2)
-  max-width: $exhibit-card-image-size + $exhibit-card-gutter + 2px;
+  max-width: 370px; //$exhibit-card-image-size + $exhibit-card-gutter + 2px;
   padding: 0 $exhibit-card-gutter 0 0;
   perspective: 1000; // for flip animation
   position: relative;
