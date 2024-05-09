@@ -102,7 +102,7 @@
 }
 
 .image-masthead {
-  background-color: $black;
+  background-color: $masthead-bg;
 
   .exhibit-navbar {
     @extend .navbar-dark;
@@ -118,12 +118,11 @@
   }
 
   .h2 {
-    color: $white;
-    text-shadow: 1px 1px 0 $gray-900;
+     color: $black;
   }
 
   small {
-    color: $white;
+    color: $black;
   }
 
   // This is to add a background image to the masthead, in a way that
@@ -133,13 +132,15 @@
     background-repeat: no-repeat;
     background-size: cover;
 
+    opacity: 0.5;
+
     // Add right border to image to hide lighter blurred edge
     border-right: 1px solid $black;
 
     // Add small amount of blur to help text stand out
     //filter: url(masthead/blur.svg#blur); // for older versions of FF
-    -webkit-filter: blur($masthead-image-blur);
-    filter: blur($masthead-image-blur);
+    //-webkit-filter: blur($masthead-image-blur);
+    //filter: blur($masthead-image-blur);
 
     height: 100%;
 
