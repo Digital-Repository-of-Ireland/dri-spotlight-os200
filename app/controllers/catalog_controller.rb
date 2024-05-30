@@ -45,6 +45,7 @@ class CatalogController < ApplicationController
     config.add_facet_field 'readonly_county_ssim', label: 'County', limit: true, index_range: true, sort: :index
     config.add_facet_field 'readonly_townland_ssim', label: 'Townland', limit: true, index_range: true, sort: :index
     config.add_facet_field 'readonly_parish_ssim', label: 'Parish', limit: true, index_range: true, sort: :index
+    config.add_facet_field 'readonly_language_ssim', label: 'Language', limit: true
     #config.add_facet_field 'readonly_year_ssim', label: 'Year', limit: true
     config.add_facet_field 'dates_ssim', label: 'Dates', limit: true
     config.add_facet_field 'geojson_ssim', limit: -2, label: 'Coordinates', show: false

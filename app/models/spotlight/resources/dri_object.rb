@@ -19,7 +19,7 @@ module Spotlight
         add_label
         add_creator
         add_author
-        #add_year
+
         add_date_range('creation_date')
         add_date_range('date')
 
@@ -29,6 +29,7 @@ module Spotlight
         end
 
         add_collection_facet
+        add_language_facet
         add_temporal_coverage
         add_geographical_coverage
         add_metadata
@@ -194,6 +195,11 @@ module Spotlight
         solr_hash['readonly_year_ssim'] = dri_object.year
       end
 
+      def add_language_facet
+        return unless metadata.key?('language') && metadata['language'].present?
+        solr_hash['readonly_language_ssim'] = dri_object.language
+      end
+
       def add_metadata
         solr_hash.merge!(object_metadata)
         sidecar.update(data: sidecar.data.merge(object_metadata))
@@ -342,6 +348,10 @@ module Spotlight
 
         def author
           metadata['role_aut'] unless metadata.key?('role_aut') && metadata['role_aut'].present?
+        end
+
+        def language
+          metadata['language']
         end
 
         def barony
@@ -561,7 +571,7 @@ module Spotlight
         end
 
         def desc_metadata_fields
-          %w(description doi creator author year subject ext_related_items_id_relation barony county townland parish collection geographical_coverage temporal_coverage type attribution rights license)
+          %w(description doi creator author year subject ext_related_items_id_relation barony county townland parish collection language geographical_coverage temporal_coverage type attribution rights license)
         end
 
         def add_attribution(field, hash)
