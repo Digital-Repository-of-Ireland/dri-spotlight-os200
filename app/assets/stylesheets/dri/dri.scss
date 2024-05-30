@@ -3,13 +3,23 @@ button.dri_open_button {
     border: none;
     background-color: $dri_green;
     padding: 0;
-    margin: 20px 0 20px 0;
+    margin-top: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
     width: 60%;
     height: 26px;
     display: block;
     @include border_radius;
+    text-decoration: none; 
     &:hover {
         background-color: darken($dri_green, 6%);
+    }
+}
+
+.dri_open_button_link {
+    text-decoration: none;
+    &:hover {
+        text-decoration: none;
     }
 }
 

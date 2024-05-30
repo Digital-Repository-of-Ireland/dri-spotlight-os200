@@ -48,6 +48,15 @@
       </div>
     </div>
     <%= openseadragon_picture_tag image, class: 'osd-image row', data: { openseadragon: osd_config } %>
-  </div>
+    
+    <%= link_to("https://repository.dri.ie/catalog/#{@document['readonly_dri_id_ssim'].first}", target: "_blank", class: 'dri_open_button_link')  do %>
+      <%= button_tag('View on DRI', { class: 'dri_open_button' }) %>
+    <% end %>
 
+    <% image.each.with_index(1) do |i, index| %>
+       <%= link_to(iiif_url_to_download(i), target: "_blank", class: 'dri_open_button_link')  do %>
+        <%= button_tag("Download Image #{index}", { class: 'dri_open_button' }) %>
+      <% end %>
+    <% end %>
+  </div>
 <% end %>

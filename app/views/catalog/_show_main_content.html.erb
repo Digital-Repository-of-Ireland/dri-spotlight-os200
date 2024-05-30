@@ -29,11 +29,10 @@
         </div>
         <div class="d-flex flex-wrap flex-md-nowrap pb-2 mt-4">
           <%= render_document_partials @document, [:openseadragon], component: component %>
-           <div class="col-md-6">
-             <%= render_document_partials @document, [:show], component: component %>
-           </div>
+          <div class="col-md-6">
+            <%= render_document_partials @document, [:show], component: component %>
+          </div>
         </div>
-      
     </div>
   <% end %>
 <% end %>
