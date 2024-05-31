@@ -10,7 +10,8 @@
     homeButton:       "#{id_prefix}-home",
     fullPageButton:   "#{id_prefix}-full-page",
     nextButton:       "#{id_prefix}-next",
-    previousButton:   "#{id_prefix}-previous"
+    previousButton:   "#{id_prefix}-previous",
+    downloadButton:   "#{id_prefix}-download"
   }
 
   if current_user && current_user.repository_accounts.any?
@@ -31,6 +32,8 @@
 
 <% unless image.nil? %>
   <% count = Array(image).length %>
+  <% download_links = image.map { |i| iiif_url_to_download(i) } %>
+
   <div class="openseadragon-container col-md-6">
     <div class="osd-toolbar row">
       <div class="col-md-6 pagination">
@@ -45,18 +48,21 @@
         <a id="<%= id_prefix %>-zoom-out"><%= render Blacklight::Gallery::Icons::RemoveCircleComponent.new %></a>
         <a id="<%= id_prefix %>-home"><%= render Blacklight::Gallery::Icons::ResizeSmallComponent.new %></a>
         <a id="<%= id_prefix %>-full-page"><%= render Blacklight::Gallery::Icons::CustomFullscreenComponent.new %></a>
+        <a id="<%= id_prefix %>-download" data-link="<%= download_links[0] %>"><%= render Icons::DownloadComponent.new %></a>
       </div>
     </div>
-    <%= openseadragon_picture_tag image, class: 'osd-image row', data: { openseadragon: osd_config } %>
+    
+    <%= openseadragon_picture_tag image, class: 'osd-image row', data: { openseadragon: osd_config, downloads: download_links } %>
     
     <%= link_to("https://repository.dri.ie/catalog/#{@document['readonly_dri_id_ssim'].first}", target: "_blank", class: 'dri_open_button_link')  do %>
       <%= button_tag('View on DRI', { class: 'dri_open_button' }) %>
     <% end %>
-
-    <% image.each.with_index(1) do |i, index| %>
-       <%= link_to(iiif_url_to_download(i), target: "_blank", class: 'dri_open_button_link')  do %>
-        <%= button_tag("Download Image #{index}", { class: 'dri_open_button' }) %>
-      <% end %>
-    <% end %>
   </div>
+
+  <script>
+     var downloadBtn = document.getElementById("<%= id_prefix %>-download");
+      downloadBtn.addEventListener("click",function(e){
+        window.location.href = $(this).attr('data-link');
+      });
+    </script>
 <% end %>
