@@ -136,3 +136,15 @@ a:focus {
 #document #blacklight-show-map {
   height: 95%;
 }
+
+#document-metadata .dl-invert {
+    dt {
+      font-weight: bold;
+      color: $dri_darkgrey;
+      text-align: left;
+    }
+}
+
+.document-metadata {
+      display: block !important;
+}
