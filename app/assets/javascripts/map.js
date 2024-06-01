@@ -314,8 +314,13 @@
           }),
     });
 
-    if (Array.isArray(geojsonSource.getFeatures()) && geojsonSource.getFeatures().length > 0) {
-      map.getView().fit(geojsonSource.getExtent(), { padding: [50, 50, 50, 50] }); 
+    if (Array.isArray(geojsonSource.getFeatures())) {
+      if (geojsonSource.getFeatures().length == 1) {
+        map.getView().fit(geojsonSource.getExtent(), { padding: [50, 50, 50, 50] });
+        map.getView().setZoom(12);
+      } else if (geojsonSource.getFeatures().length > 1) {
+        map.getView().fit(geojsonSource.getExtent(), { padding: [50, 50, 50, 50] });
+      } 
     }
 
     var layerSwitcher = new LayerSwitcher({
