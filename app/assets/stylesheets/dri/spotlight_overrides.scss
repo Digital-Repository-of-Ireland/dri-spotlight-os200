@@ -34,11 +34,22 @@ a:focus {
 
 .btn-link {
   @extend .dri-button;
-  color: $dri_white;
-  background-color: $dri_lightgrey;
-  &:hover {
-    background-color: darken($dri_lightgrey, 3%) !important;
-  }
+}
+
+.btn-outline-secondary:hover {
+    background-color: $dri_lightgrey;
+    text-decoration: underline;
+}
+
+.btn-outline-secondary {
+    color: $os200_darkblue;
+}
+
+.btn-primary:hover {
+    text-decoration: underline;
+}
+.btn-primary {
+    text-decoration: none;
 }
 
 .dri-button {
@@ -49,18 +60,11 @@ a:focus {
     cursor: pointer;
     background-image: none;
     white-space: nowrap;
-    font-size: 100%;
     line-height: none;
     @include border_radius (3px);
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-}
-
-.search-btn {
-   &:hover {
-     background-color: $dri_extralightgrey !important;
-  }
 }
 
 .navbar {
@@ -82,13 +86,13 @@ a:focus {
     text-decoration: none;
     color: $dri-darkgrey !important;
     &:hover {
-                text-decoration: underline !important;
+            text-decoration: underline !important;
             }
 }
 
 #user-util-collapse .nav-link {
     color: $dri_darkgrey !important;
-  }
+}
 
 .image-masthead .exhibit-navbar .navbar-nav {
   text-transform: capitalize !important;
@@ -98,14 +102,10 @@ a:focus {
   color: $dri_darkgrey !important;
   text-decoration: none;
 }
+
 .st-block-controls__button {
     color: $dri_white;
 }
-
-//.pagination > .active > a {
-//  color: #777777 !important;
-//  border-color: #ddd !important;
-//}
 
 .search-widgets {
   .btn {

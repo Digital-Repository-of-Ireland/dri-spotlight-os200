@@ -23,7 +23,7 @@
         a {
             list-style: none;
             text-decoration: none;
-            color: $dri_midgrey;
+            color: $dri_darkgrey;
             margin: 0;
             padding: 0;
             display: block;
@@ -43,9 +43,9 @@
     margin: 10px 0 10px 0;
     margin-right: 10%;
     float: right;
-    color: $dri_greytext;
+    color: $dri_darkgrey;
     a {
-        color: $dri_midgrey;
+        color: $os200_darkblue;;
         text-decoration: underline;
     }
 }
