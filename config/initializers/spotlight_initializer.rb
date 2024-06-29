@@ -1,3 +1,4 @@
+Rails.application.config.to_prepare do
 # ==> User model
 # Note that your chosen model must include Spotlight::User mixin
 # Spotlight::Engine.config.user_class = '::User'
@@ -50,7 +51,7 @@ Spotlight::Engine.config.uploader_storage_path = 'os200/uploads'
 # Spotlight::Engine.config.featured_image_square_size = [400, 400]
 
 # ==> Google Analytics integration
-# Spotlight::Engine.config.analytics_provider = nil
+Spotlight::Engine.config.analytics_provider = Spotlight::Analytics::Ga4
 # Spotlight::Engine.config.ga_pkcs12_key_path = nil
 # Spotlight::Engine.config.ga_web_property_id = nil
 # Spotlight::Engine.config.ga_email = nil
@@ -69,3 +70,4 @@ Spotlight::Engine.config.sir_trevor_widgets = %w(
    FeaturedPages SolrDocuments SolrDocumentsCarousel SolrDocumentsEmbed
    SolrDocumentsFeatures SolrDocumentsGrid SearchResults SearchResultsMap
 )
+end
