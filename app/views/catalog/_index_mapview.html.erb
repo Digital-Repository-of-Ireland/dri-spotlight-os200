@@ -3,7 +3,7 @@
     <%= stylesheet_link_tag 'ol-layerswitcher/ol-layerswitcher' %>
 <% end %>
 
-<%= content_tag(:div, id: 'blacklight-index-map', data: { townland_source: Mapping.geoserver, townland_layer: Mapping.geoserver_layer }) do %>
+<%= content_tag(:div, id: 'blacklight-index-map', data: { townland_source: Mapping.geoserver, townland_layer: Mapping.geoserver_layer, turbolinks: 'false'}) do %>
   <div id="popup" class="ol-popup">
     <a href="#" id="popup-closer" class="ol-popup-closer"></a>
     <div id="popup-content"></div>
