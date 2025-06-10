@@ -17,9 +17,9 @@ module Spotlight
     accepts_nested_attributes_for :group_memberships
     accepts_nested_attributes_for :groups
     if defined?(Blacklight::SearchParamsYamlCoder)
-      serialize :query_params, Blacklight::SearchParamsYamlCoder, default: -> { {} }
+      serialize :query_params, coder: Blacklight::SearchParamsYamlCoder, default: -> { {} }
     else
-      serialize :query_params, Hash
+      serialize :query_params, type: Hash
     end
     default_scope { order('weight ASC') }
     scope :published, -> { where(published: true) }

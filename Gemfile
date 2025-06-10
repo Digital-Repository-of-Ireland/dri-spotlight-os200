@@ -7,14 +7,14 @@ end
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.1'
+gem 'rails', '7.2'
 
 gem 'activerecord-nulldb-adapter'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3', '~> 1.4'
 gem 'pg'
 # Use Puma as the app server
-gem 'puma', '~> 4'
+gem 'puma'
 # Use SCSS for stylesheets
 gem 'sass-rails', '>= 6.0'
 gem 'terser'
@@ -66,8 +66,8 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'blacklight', ' ~> 7.0'
-gem 'blacklight-spotlight', '3.5.0.3'
-gem 'blacklight-maps'
+gem 'blacklight-spotlight', github: 'Digital-Repository-of-Ireland/spotlight', branch: 'v3.5.0.4-rails7'
+gem 'blacklight-maps', '1.2.0'
 group :development, :test do
   gem 'solr_wrapper', '>= 0.3'
 end
@@ -80,6 +80,7 @@ gem 'spotlight-resources-dri', github: 'Digital-Repository-of-Ireland/spotlight-
 
 gem 'rsolr', '>= 1.0', '< 3'
 gem 'bootstrap', '~> 4.0'
+gem 'bootstrap_form', '~> 4.0'
 #gem 'bootstrap-sass'
 gem 'twitter-typeahead-rails', '0.11.1.pre.corejavascript'
 gem 'jquery-rails'
@@ -88,8 +89,8 @@ gem 'devise-guests', '~> 0.8'
 gem 'friendly_id'
 gem 'riiif'
 gem 'sitemap_generator'
-gem 'blacklight-gallery', '~> 4.0'
-gem 'openseadragon', '>= 0.2.0'
+gem 'blacklight-gallery', '4.4.0'
+gem 'openseadragon', '0.6.0'
 gem 'blacklight-oembed', '~> 1.0'
 gem 'devise_invitable'
 gem 'google-analytics-data-v1beta', '~> 0.8.0'
