@@ -4,6 +4,40 @@ module Spotlight
     # A PORO to construct a solr hash for a given Dri Object json
     class DriObject
       attr_reader :collection
+
+      COUNTIES = %w(Antrim
+Armagh
+Carlow
+Cavan
+Clare
+Cork
+Derry
+Donegal
+Down
+Dublin
+Fermanagh
+Galway
+Kerry
+Kildare
+Kilkenny
+Laois
+Leitrim
+Limerick
+Longford
+Louth
+Mayo
+Meath
+Monaghan
+Offaly
+Roscommon
+Sligo
+Tipperary
+Tyrone
+Waterford
+Westmeath
+Wexford
+Wicklow)
+
       def initialize(attrs = {})
         @id = attrs[:id]
         @metadata = attrs[:metadata]
@@ -35,6 +69,18 @@ module Spotlight
         add_metadata
         add_collection_id
         add_relation
+
+        if solr_hash['readonly_collection_ssim'] == 'OS Letters' && solr_hash['readonly_county_ssim'].blank?
+          solr_hash['readonly_county_ssim'] = []
+          solr_hash['readonly_county_tesim'] = []
+
+          solr_hash['full_title_tesim'].each do |t|
+            COUNTIES.each do |c|
+              solr_hash['readonly_county_ssim'] << "County #{c}" if t.include?(c)
+              solr_hash['readonly_county_tesim'] << "County #{c}" if t.include?(c)
+            end
+          end
+        end
 
         add_image_urls if metadata['type'] != ['Collection']
         add_thumbnail
@@ -327,6 +373,8 @@ module Spotlight
           root_title = ancestor_titles.last.downcase
           case root_title
           when 'ordnance survey of ireland letters'
+            'OS Letters'
+          when 'ordnance survey letters'
             'OS Letters'
           when 'ordnance survey first edition 6-inch map sheet information'
             'OS Maps'

@@ -8,4 +8,8 @@ class ArcGisTokenGenerator
     response = @client["/generateToken?f=json"].post({ username: Mapping.username, password: Mapping.password, referer: 'clientip' }, { accept: :json })
     JSON.parse(response)['token']
   end
+
+  def api_key
+    Mapping.api_key
+  end
 end

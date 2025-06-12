@@ -29,7 +29,7 @@
 
     function getServiceJson(){
       const serviceRequest = new XMLHttpRequest();
-      serviceRequest.open("GET", 'https://tiles-eu1.arcgis.com/FH5XCsx8rYXqnjF5/arcgis/rest/services/MapGeniePremiumITM/MapServer?f=json&token=' + token, false);
+      serviceRequest.open("GET", 'https://utility.arcgis.com/usrsvcs/servers/b5cbdd446d2e4f3fb31a76ec2d94b074/rest/services/MapGeniePremiumITM/MapServer?f=pjson&token=' + token, false);
       serviceRequest.send();
       var serviceJson = serviceRequest.responseText;
       return JSON.parse(serviceJson);
@@ -57,25 +57,25 @@
 
     const osiBasemapSource = new ol.source.XYZ({
         url:
-          'https://tiles-eu1.arcgis.com/FH5XCsx8rYXqnjF5/arcgis/rest/services/MapGeniePremiumITM/MapServer/tile/{z}/{y}/{x}' +
-          '?token=' + token,
-        projection: irishProjection,
+        'https://utility.arcgis.com/usrsvcs/servers/b5cbdd446d2e4f3fb31a76ec2d94b074/rest/services/MapGeniePremiumITM/MapServer/tile/{z}/{y}/{x}' +
+        '?f=psjon&token=' + token,
+	projection: irishProjection,
         tileGrid: tileGrid,
       });
 
     const historicBasemapSource = new ol.source.XYZ({
         url:
-          'https://tiles-eu1.arcgis.com/FH5XCsx8rYXqnjF5/arcgis/rest/services/MapGenie6InchFirstEditionColourITM/MapServer/tile/{z}/{y}/{x}' +
-          '?token=' + token,
-        projection: irishProjection,
+        'https://utility.arcgis.com/usrsvcs/servers/7b9e02a664a54c2e938bed62911c7258/rest/services/MapGenie6InchFirstEditionColourITM/MapServer/tile/{z}/{y}/{x}' +
+        '?f=pjson&token=' + token,
+	projection: irishProjection,
         tileGrid: tileGrid,
       });
 
     const historicBWBasemapSource = new ol.source.XYZ({
         url:
-          'https://tiles-eu1.arcgis.com/FH5XCsx8rYXqnjF5/arcgis/rest/services/MapGenie6InchFirstEditionBlackWhiteITM/MapServer/tile/{z}/{y}/{x}' +
-          '?token=' + token,
-        projection: irishProjection,
+        'https://utility.arcgis.com/usrsvcs/servers/b4da0f98915c4aeda18b89d704a3e4cf/rest/services/MapGenie6InchFirstEditionBlackWhiteITM/MapServer/tile/{z}/{y}/{x}' +
+        '?f=pjson&token=' + token,
+	projection: irishProjection,
         tileGrid: tileGrid,
       });
 
@@ -119,6 +119,49 @@
     });
 
     let clickFeature, clickResolution;
+
+    /**
+     * Computes the convex hull of a binary image using Andrew's Monotone Chain Algorithm
+     * http://www.algorithmist.com/index.php/Monotone_Chain_Convex_Hull
+     *
+     * @param points - An array of points.
+     * @param options - MCCH Algorithm options.
+     * @return Coordinates of the convex hull in clockwise order
+     */
+    function monotoneChainConvexHull(points, options = {}) {
+       const { sorted } = options;
+       if (!sorted) {
+           points = points.slice().sort(byXThenY);
+       }
+       const n = points.length;
+       const result = new Array(n * 2);
+       let k = 0;
+       for (let i = 0; i < n; i++) {
+          const point = points[i];
+          while (k >= 2 && cw(result[k - 2], result[k - 1], point) <= 0) {
+              k--;
+          }
+          result[k++] = point;
+       }
+       const t = k + 1;
+       for (let i = n - 2; i >= 0; i--) {
+           const point = points[i];
+           while (k >= t && cw(result[k - 2], result[k - 1], point) <= 0) {
+               k--;
+           }
+           result[k++] = point;
+       }
+       return result.slice(0, k - 1);
+    }
+    function cw(p1, p2, p3) {
+        return (p2[1] - p1[1]) * (p3[0] - p1[0]) - (p2[0] - p1[0]) * (p3[1] - p1[1]);
+    }
+     function byXThenY(point1, point2) {
+       if (point1[0] === point2[0]) {
+           return point1[1] - point2[1];
+       }
+       return point1[0] - point2[0];
+    }
 
     /**
      * Style for clusters with features that are too close to each other, activated on click.
@@ -376,11 +419,12 @@
               view.getZoom() === view.getMaxZoom() ||
               (ol.extent.getWidth(extent) < resolution && ol.extent.getHeight(extent) < resolution)
             ) {
-              // Show an expanded view of the cluster members.
-              clickFeature = features[0];
-              clickResolution = resolution;
-              clusterCircles.setStyle(clusterCircleStyle);
-            } else {
+              clickFeature = features[0].get('features')[0];
+              var coord = map.getCoordinateFromPixel(event.pixel);
+              var content = features[0].get('features')[0].get('popup');
+              content_element.innerHTML = content;
+              overlay.setPosition(coord);
+	    } else {
               // Zoom to the extent of the cluster members.
               view.fit(extent, {duration: 500, padding: [50, 50, 50, 50]});
             }
