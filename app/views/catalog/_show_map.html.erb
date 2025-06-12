@@ -14,5 +14,4 @@
   <% end %>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/monotone-chain-convex-hull@1.0.0/lib/index.js"></script>
 <%= javascript_tag "$('#blacklight-show-map').dri_openlayers_map(#{serialize_geojson(@document)}, \"#{@access_token}\", { id: 'blacklight-show-map'});" %>

@@ -81,6 +81,6 @@ class CatalogController < ApplicationController
   end
 
   def access_token
-   @access_token ||= ArcGisTokenGenerator.new.token
+   @access_token ||= ArcGisTokenGenerator.new.api_key
   end
 end
