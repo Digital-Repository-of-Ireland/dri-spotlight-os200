@@ -52,7 +52,7 @@ module Spotlight
                  exhibit
                end
 
-        "/os200#{path}"
+        path
       end
 
     end
