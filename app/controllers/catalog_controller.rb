@@ -7,7 +7,7 @@ class CatalogController < ApplicationController
  
   include BlacklightMaps::Controller
   
-  #before_action :access_token, only: [:index, :show]
+  before_action :access_token, only: [:index, :show]
 
   configure_blacklight do |config|
     config.view.gallery(document_component: Blacklight::Gallery::DocumentComponent, icon: Blacklight::Gallery::Icons::GalleryComponent)
@@ -79,14 +79,15 @@ class CatalogController < ApplicationController
     config.view.maps.facet_mode = 'geojson'
     config.view.maps.placename_field = 'placename_sim'
     config.view.maps.geojson_field = 'geojson_ssim'
-    config.view.maps.search_mode = 'placename'
+    config.view.maps.search_mode = 'coordinates'
     config.view.maps.spatial_query_dist = 0.5
 
+    config.controller_tracking_method = 'exhibit_track_catalog_path'
     # Set which views by default only have the title displayed, e.g.,
     # config.view.gallery.title_only_by_default = true
   end
 
   def access_token
-   @access_token ||= ArcGisTokenGenerator.new.api_key
+    @access_token ||= ArcGisTokenGenerator.new.api_key
   end
 end
