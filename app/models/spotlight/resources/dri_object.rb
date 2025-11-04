@@ -372,13 +372,11 @@ Wicklow)
 
           root_title = ancestor_titles.last.downcase
           case root_title
-          when 'ordnance survey of ireland letters'
-            'OS Letters'
           when 'ordnance survey letters'
             'OS Letters'
           when 'ordnance survey first edition 6-inch map sheet information'
             'OS Maps'
-          when 'ordnance survey name book transcriptions'
+          when 'ordnance survey name books'
             'OS Name Books'
           when 'ordnance survey memoir drawings'
             'OS Drawings'
